@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>囲碁 完全ガイド — ルール＆戦略ブック</title>
+<style>
+  /* ===== Google Fonts ===== */
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap');
+
+  /* ===== CSS Reset & Base ===== */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --page-w: 210mm;
+    --page-h: 297mm;
+    --pad: 10mm;
+    --c-bg: #faf8f2;
+    --c-bg2: #f3efe5;
+    --c-ink: #2c2416;
+    --c-ink2: #5a4e3a;
+    --c-accent: #b8860b;
+    --c-accent2: #8b6508;
+    --c-board: #dcb35c;
+    --c-board-line: #3a3020;
+    --c-black: #1a1a1a;
+    --c-white: #f5f5f0;
+    --c-section-bg: #fffdf6;
+    --c-highlight: #fff3d0;
+    --c-tip-bg: #e8f5e9;
+    --c-tip-border: #4caf50;
+    --c-warn-bg: #fff8e1;
+    --c-warn-border: #ff9800;
+    --c-adv-bg: #fce4ec;
+    --c-adv-border: #e91e63;
+    --font-sans: 'Noto Sans JP', 'Hiragino Sans', 'Meiryo', sans-serif;
+    --font-serif: 'Noto Serif JP', 'Yu Mincho', serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: 14pt;
+    line-height: 1.4;
+    color: var(--c-ink);
+    background: #e8e4da;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== Page ===== */
+  .page {
+    width: var(--page-w);
+    min-height: var(--page-h);
+    margin: 8mm auto;
+    padding: var(--pad);
+    background: var(--c-bg);
+    box-shadow: 0 2px 20px rgba(0,0,0,.15);
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+  .page::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background: linear-gradient(90deg, var(--c-accent), var(--c-accent2), #d4a017, var(--c-accent));
+  }
+
+  /* ===== Print ===== */
+  @page {
+    margin: 0;
+    size: A4 portrait;
+  }
+  @media print {
+    body { background: white; margin: 0; padding: 0; }
+    .page {
+      margin: 0;
+      box-shadow: none;
+      page-break-after: always;
+      page-break-inside: avoid;
+    }
+    .page::before { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .no-print { display: none !important; }
+  }
+
+  /* ===== Typography ===== */
+  h1 {
+    font-family: var(--font-serif);
+    font-size: 32pt;
+    font-weight: 900;
+    color: var(--c-accent2);
+    text-align: center;
+    margin-bottom: 1mm;
+    letter-spacing: 0.15em;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 14pt;
+    color: var(--c-ink2);
+    margin-bottom: 3mm;
+    font-weight: 300;
+  }
+  h2 {
+    font-family: var(--font-serif);
+    font-size: 20pt;
+    font-weight: 700;
+    color: var(--c-accent2);
+    border-bottom: 2px solid var(--c-accent);
+    padding-bottom: 1.5mm;
+    margin: 3mm 0 2mm;
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+  }
+  h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px; height: 26px;
+    background: var(--c-accent);
+    color: white;
+    border-radius: 50%;
+    font-size: 14pt;
+    font-family: var(--font-sans);
+    font-weight: 700;
+  }
+  h3 {
+    font-size: 15pt;
+    font-weight: 700;
+    color: var(--c-ink);
+    margin: 2mm 0 1mm;
+    padding-left: 3mm;
+    border-left: 3px solid var(--c-accent);
+  }
+  h4 {
+    font-size: 14pt;
+    font-weight: 700;
+    color: var(--c-accent2);
+    margin: 1.5mm 0 0.5mm;
+  }
+
+  p { margin-bottom: 1mm; text-align: justify; }
+
+  /* ===== Layout Helpers ===== */
+  .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; }
+  .cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2mm; }
+  .cols-23 { display: grid; grid-template-columns: 2fr 3fr; gap: 2mm; align-items: start; }
+  .cols-32 { display: grid; grid-template-columns: 3fr 2fr; gap: 2mm; align-items: start; }
+
+  /* ===== Card / Box ===== */
+  .card {
+    background: var(--c-section-bg);
+    border: 1px solid #e6dcc8;
+    border-radius: 3mm;
+    padding: 2mm;
+    margin-bottom: 1.5mm;
+  }
+  .tip {
+    background: var(--c-tip-bg);
+    border-left: 3px solid var(--c-tip-border);
+    padding: 1.5mm 2mm;
+    border-radius: 0 2mm 2mm 0;
+    margin: 1.5mm 0;
+    font-size: 13pt;
+  }
+  .tip::before { content: '💡 '; }
+  .warn {
+    background: var(--c-warn-bg);
+    border-left: 3px solid var(--c-warn-border);
+    padding: 1.5mm 2mm;
+    border-radius: 0 2mm 2mm 0;
+    margin: 1.5mm 0;
+    font-size: 13pt;
+  }
+  .warn::before { content: '⚠️ '; }
+  .adv {
+    background: var(--c-adv-bg);
+    border-left: 3px solid var(--c-adv-border);
+    padding: 1.5mm 2mm;
+    border-radius: 0 2mm 2mm 0;
+    margin: 1.5mm 0;
+    font-size: 13pt;
+  }
+  .adv::before { content: '🔥 '; }
+  .highlight-box {
+    background: var(--c-highlight);
+    border: 1px solid #e6d590;
+    border-radius: 2mm;
+    padding: 1.5mm 2mm;
+    margin: 1.5mm 0;
+  }
+
+  /* ===== Lists ===== */
+  ul, ol { padding-left: 5mm; margin-bottom: 1mm; }
+  li { margin-bottom: 0.3mm; }
+
+  /* ===== Table ===== */
+  table { width: 100%; border-collapse: collapse; margin: 1mm 0; font-size: 13pt; }
+  th, td { border: 1px solid #d4c9a8; padding: 1mm 2mm; }
+  th { background: var(--c-accent); color: white; font-weight: 500; text-align: center; }
+  td { background: var(--c-section-bg); }
+  tr:nth-child(even) td { background: var(--c-bg2); }
+
+  /* ===== Goban SVG ===== */
+  .goban-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 1mm 0;
+  }
+  .goban-wrap svg { max-width: 100%; height: auto; }
+  .fig-caption {
+    text-align: center;
+    font-size: 12pt;
+    color: var(--c-ink2);
+    margin-top: 1mm;
+  }
+
+  /* ===== Cover ===== */
+  .cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(var(--page-h) - var(--pad) * 2);
+    text-align: center;
+  }
+  .cover-title {
+    font-family: var(--font-serif);
+    font-size: 46pt;
+    font-weight: 900;
+    color: var(--c-accent2);
+    letter-spacing: 0.2em;
+    margin-bottom: 4mm;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.08);
+  }
+  .cover-sub {
+    font-size: 18pt;
+    color: var(--c-ink2);
+    font-weight: 300;
+    margin-bottom: 12mm;
+    letter-spacing: 0.1em;
+  }
+  .cover-line {
+    width: 60mm;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--c-accent), transparent);
+    margin: 6mm 0;
+  }
+  .cover-desc {
+    font-size: 14pt;
+    color: var(--c-ink2);
+    max-width: 140mm;
+    line-height: 1.8;
+  }
+
+  /* ===== TOC ===== */
+  .toc { margin: 4mm 0; }
+  .toc-section {
+    font-weight: 700;
+    color: var(--c-accent2);
+    font-size: 15pt;
+    margin: 3mm 0 1mm;
+    padding-left: 2mm;
+    border-left: 3px solid var(--c-accent);
+  }
+  .toc ul { list-style: none; padding-left: 6mm; }
+  .toc li { margin-bottom: 1mm; font-size: 13pt; }
+  .toc li::before { content: '▸ '; color: var(--c-accent); }
+
+  /* ===== Badge ===== */
+  .badge {
+    display: inline-block;
+    font-size: 10pt;
+    padding: 0.5mm 2mm;
+    border-radius: 1mm;
+    font-weight: 700;
+    margin-right: 1mm;
+    vertical-align: middle;
+  }
+  .badge-beginner { background: #e3f2fd; color: #1565c0; }
+  .badge-inter { background: #fff3e0; color: #e65100; }
+  .badge-adv { background: #fce4ec; color: #c62828; }
+
+  /* ===== Specific Small ===== */
+  .small { font-size: 12pt; color: var(--c-ink2); }
+  strong { font-weight: 700; }
+  .text-center { text-align: center; }
+  .mt-2 { margin-top: 2mm; }
+  .mt-4 { margin-top: 4mm; }
+  .mb-2 { margin-bottom: 2mm; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================ -->
+<!-- 表紙 -->
+<!-- ============================================================ -->
+<div class="page">
+  <div class="cover">
+    <div style="margin-bottom: 12mm;">
+      <!-- 碁盤アイコン SVG -->
+      <svg width="140" height="140" viewBox="0 0 80 80">
+        <rect x="5" y="5" width="70" height="70" rx="3" fill="#dcb35c" stroke="#3a3020" stroke-width="2"/>
+        <line x1="15" y1="5" x2="15" y2="75" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <line x1="25" y1="5" x2="25" y2="75" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <line x1="35" y1="5" x2="35" y2="75" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <line x1="45" y1="5" x2="45" y2="75" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <line x1="55" y1="5" x2="55" y2="75" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <line x1="65" y1="5" x2="65" y2="75" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <line x1="5" y1="15" x2="75" y2="15" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <line x1="5" y1="25" x2="75" y2="25" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <line x1="5" y1="35" x2="75" y2="35" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <line x1="5" y1="45" x2="75" y2="45" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <line x1="5" y1="55" x2="75" y2="55" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <line x1="5" y1="65" x2="75" y2="65" stroke="#3a3020" stroke-width="0.5" opacity="0.4"/>
+        <circle cx="25" cy="25" r="6" fill="#1a1a1a"/>
+        <circle cx="55" cy="55" r="6" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+        <circle cx="45" cy="25" r="6" fill="#1a1a1a"/>
+        <circle cx="35" cy="55" r="6" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+        <circle cx="25" cy="45" r="6" fill="#1a1a1a"/>
+        <circle cx="55" cy="35" r="6" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+      </svg>
+    </div>
+    <div style="font-family: var(--font-serif); font-size: 64pt; font-weight: 900; color: var(--c-accent2); letter-spacing: 0.3em; margin-bottom: 6mm; text-shadow: 2px 2px 4px rgba(0,0,0,.1);">囲 碁</div>
+    <div style="font-size: 28pt; color: var(--c-ink2); font-weight: 300; margin-bottom: 14mm; letter-spacing: 0.15em;">完全ガイド</div>
+    <div class="cover-line"></div>
+    <div style="font-size: 20pt; color: var(--c-ink2); font-weight: 300; margin-bottom: 10mm; letter-spacing: 0.1em;">ルール＆戦略ブック</div>
+    <div style="font-size: 16pt; color: var(--c-ink2); max-width: 150mm; line-height: 2; text-align: center;">
+      初心者から上級者まで使える、囲碁のルールと戦略を<br>
+      コンパクトにまとめた実践的ガイドブック。<br>
+      4000年以上の歴史を持つ知の競技、その扉を開こう。
+    </div>
+    <div class="cover-line" style="margin-top:14mm;"></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 目次 -->
+<!-- ============================================================ -->
+<div class="page">
+  <h1>目 次</h1>
+  <div class="cover-line" style="margin: 2mm auto 6mm;"></div>
+
+  <div class="toc">
+    <div class="toc-section">第1部：基本ルール編</div>
+    <ul>
+      <li>囲碁とは — ゲームの概要と道具</li>
+      <li>碁盤と交点 — 打つ場所を理解する</li>
+      <li>基本ルール① — 陣地（地）を囲む</li>
+      <li>基本ルール② — 石を取る（呼吸点とアタリ）</li>
+      <li>基本ルール③ — 着手禁止点</li>
+      <li>基本ルール④ — コウ</li>
+      <li>生と死 — 二眼と死活</li>
+      <li>対局の流れ — 開始から終局まで</li>
+      <li>コミとハンディキャップ（置碁）</li>
+    </ul>
+
+    <div class="toc-section">第2部：戦略ブック編</div>
+    <ul>
+      <li>レベル別 戦略マップ</li>
+      <li>序盤の戦略 — 布石の考え方</li>
+      <li>隅・辺・中央の価値</li>
+      <li>石の形 — 良い形と悪い形</li>
+      <li>中盤の戦略 — 攻めと守りの原則</li>
+      <li>手筋（テスジ） — 実戦テクニック集</li>
+      <li>死活の基本パターン</li>
+      <li>終盤の戦略 — ヨセの技術</li>
+      <li>上級戦略 — 厚みと模様</li>
+      <li>棋力向上のためのロードマップ</li>
+    </ul>
+  </div>
+
+  <div class="highlight-box mt-4">
+    <strong>本ガイドの使い方</strong><br>
+    <span class="badge badge-beginner">初心者</span> 第1部を熟読し、実際に打ってみよう<br>
+    <span class="badge badge-inter">中級者</span> 第2部の序盤〜中盤戦略を重点的に<br>
+    <span class="badge badge-adv">上級者</span> 手筋・死活・ヨセ・厚みのセクションを活用
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- P1: 基本ルール編 -->
+<!-- ============================================================ -->
+<div class="page">
+  <h2><span class="num">1</span> 囲碁とは</h2>
+
+  <div class="cols-32">
+    <div>
+      <p>囲碁は<strong>約4000年前に中国で生まれた</strong>、世界最古のボードゲームの一つです。２人のプレーヤーが<strong>黒石</strong>と<strong>白石</strong>を交互に碁盤の上に置き、より広い<strong>陣地（地）</strong>を囲った方が勝ちになります。</p>
+
+      <h3>道具</h3>
+      <ul>
+        <li><strong>碁盤</strong>：19×19の格子線が引かれた正方形の盤</li>
+        <li><strong>碁石</strong>：S・Mサイズ…301個 / Lサイズ…361個</li>
+        <li><strong>碁笥（ごけ）</strong>：石を入れる容器</li>
+      </ul>
+
+      <h3>ゲームの目的</h3>
+      <p>対局終了時に、相手より<strong>多くの陣地</strong>を確保していること。陣地とは、自分の石で完全に囲まれた碁盤上の空間（交点）です。</p>
+    </div>
+    <div>
+      <div class="card">
+        <h4 class="text-center">19路盤の基本情報</h4>
+        <table>
+          <tr><th>項目</th><th>内容</th></tr>
+          <tr><td>サイズ</td><td>19×19 = <strong>361交点</strong></td></tr>
+          <tr><td>碁石</td><td>S・M：<strong>301個</strong> / L：<strong>361個</strong></td></tr>
+          <tr><td>所要時間</td><td>1〜3時間（初心者同士はもっと短め）</td></tr>
+          <tr><td>星の数</td><td>9つ（隅4 + 辺4 + 天元1）</td></tr>
+        </table>
+      </div>
+      <div class="tip">19路盤は最初は広く感じますが、<strong>隅から打ち始める</strong>ことで、自然と碁が打てるようになります！</div>
+    </div>
+  </div>
+
+  <h2><span class="num">2</span> 碁盤と交点</h2>
+
+  <div class="cols-23">
+    <div>
+      <div class="goban-wrap">
+        <!-- 19路盤 SVG -->
+        <svg width="300" height="310" viewBox="0 0 300 310">
+          <rect x="0" y="0" width="300" height="300" fill="#dcb35c" rx="4"/>
+          <g stroke="#3a3020" stroke-width="0.5">
+            <line x1="15" y1="15" x2="15" y2="285"/><line x1="30" y1="15" x2="30" y2="285"/>
+            <line x1="45" y1="15" x2="45" y2="285"/><line x1="60" y1="15" x2="60" y2="285"/>
+            <line x1="75" y1="15" x2="75" y2="285"/><line x1="90" y1="15" x2="90" y2="285"/>
+            <line x1="105" y1="15" x2="105" y2="285"/><line x1="120" y1="15" x2="120" y2="285"/>
+            <line x1="135" y1="15" x2="135" y2="285"/><line x1="150" y1="15" x2="150" y2="285"/>
+            <line x1="165" y1="15" x2="165" y2="285"/><line x1="180" y1="15" x2="180" y2="285"/>
+            <line x1="195" y1="15" x2="195" y2="285"/><line x1="210" y1="15" x2="210" y2="285"/>
+            <line x1="225" y1="15" x2="225" y2="285"/><line x1="240" y1="15" x2="240" y2="285"/>
+            <line x1="255" y1="15" x2="255" y2="285"/><line x1="270" y1="15" x2="270" y2="285"/>
+            <line x1="285" y1="15" x2="285" y2="285"/>
+            <line x1="15" y1="15" x2="285" y2="15"/><line x1="15" y1="30" x2="285" y2="30"/>
+            <line x1="15" y1="45" x2="285" y2="45"/><line x1="15" y1="60" x2="285" y2="60"/>
+            <line x1="15" y1="75" x2="285" y2="75"/><line x1="15" y1="90" x2="285" y2="90"/>
+            <line x1="15" y1="105" x2="285" y2="105"/><line x1="15" y1="120" x2="285" y2="120"/>
+            <line x1="15" y1="135" x2="285" y2="135"/><line x1="15" y1="150" x2="285" y2="150"/>
+            <line x1="15" y1="165" x2="285" y2="165"/><line x1="15" y1="180" x2="285" y2="180"/>
+            <line x1="15" y1="195" x2="285" y2="195"/><line x1="15" y1="210" x2="285" y2="210"/>
+            <line x1="15" y1="225" x2="285" y2="225"/><line x1="15" y1="240" x2="285" y2="240"/>
+            <line x1="15" y1="255" x2="285" y2="255"/><line x1="15" y1="270" x2="285" y2="270"/>
+            <line x1="15" y1="285" x2="285" y2="285"/>
+          </g>
+          <circle cx="60" cy="60" r="3" fill="#3a3020"/>
+          <circle cx="150" cy="60" r="3" fill="#3a3020"/>
+          <circle cx="240" cy="60" r="3" fill="#3a3020"/>
+          <circle cx="60" cy="150" r="3" fill="#3a3020"/>
+          <circle cx="150" cy="150" r="3" fill="#3a3020"/>
+          <circle cx="240" cy="150" r="3" fill="#3a3020"/>
+          <circle cx="60" cy="240" r="3" fill="#3a3020"/>
+          <circle cx="150" cy="240" r="3" fill="#3a3020"/>
+          <circle cx="240" cy="240" r="3" fill="#3a3020"/>
+          <text x="150" y="296" text-anchor="middle" font-size="11" fill="#3a3020" font-family="sans-serif">19路盤（19×19 = 361交点）</text>
+        </svg>
+      </div>
+      <div class="fig-caption">▲ 19路盤（星の位置を●で表示・天元は中央の星）</div>
+    </div>
+    <div>
+      <p>碁石は<strong>線と線の交点</strong>に置きます（マスの中ではありません）。碁盤上の黒い点を<strong>「星（ほし）」</strong>と呼び、目印になります。</p>
+
+      <h3>碁盤の名称</h3>
+      <ul>
+        <li><strong>隅（すみ）</strong>：碁盤の四隅。最も少ない石で地を囲める</li>
+        <li><strong>辺（へん）</strong>：碁盤の端の辺。隅の次に効率的</li>
+        <li><strong>中央（ちゅうおう）</strong>：碁盤の中心部分。囲うのに石が多く必要</li>
+        <li><strong>天元（てんげん）</strong>：碁盤の中心点</li>
+      </ul>
+
+      <h3>線の名称</h3>
+      <ul>
+        <li><strong>第1線</strong>：碁盤の最も外側の線</li>
+        <li><strong>第2線</strong>：外側から2番目の線</li>
+        <li><strong>第3線</strong>：「地の線」地を確定しやすい</li>
+        <li><strong>第4線</strong>：「勢力の線」中央への影響力</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- P2: 石を取る・着手禁止・コウ -->
+<!-- ============================================================ -->
+<div class="page">
+  <h2><span class="num">3</span> 石を取る — 呼吸点とアタリ</h2>
+
+  <div class="cols-2">
+    <div>
+      <p>すべての石には<strong>「呼吸点（こきゅうてん）」</strong>＝隣接する空いた交点があります。呼吸点が<strong>すべて塞がれると</strong>、その石は盤上から取り除かれます。</p>
+
+      <div class="goban-wrap">
+        <svg width="380" height="180" viewBox="0 0 210 100">
+          <rect x="0" y="0" width="100" height="100" fill="#dcb35c" rx="3"/>
+          <g stroke="#3a3020" stroke-width="0.5">
+            <line x1="20" y1="10" x2="20" y2="90"/><line x1="50" y1="10" x2="50" y2="90"/>
+            <line x1="80" y1="10" x2="80" y2="90"/>
+            <line x1="10" y1="20" x2="90" y2="20"/><line x1="10" y1="50" x2="90" y2="50"/>
+            <line x1="10" y1="80" x2="90" y2="80"/>
+          </g>
+          <circle cx="50" cy="50" r="12" fill="#1a1a1a"/>
+          <circle cx="50" cy="20" r="4" fill="none" stroke="#e53935" stroke-width="2"/>
+          <circle cx="50" cy="80" r="4" fill="none" stroke="#e53935" stroke-width="2"/>
+          <circle cx="20" cy="50" r="4" fill="none" stroke="#e53935" stroke-width="2"/>
+          <circle cx="80" cy="50" r="4" fill="none" stroke="#e53935" stroke-width="2"/>
+          <text x="50" y="98" text-anchor="middle" font-size="7" fill="#3a3020" font-family="sans-serif">呼吸点4つ</text>
+          <g transform="translate(110,0)">
+            <rect x="0" y="0" width="100" height="100" fill="#dcb35c" rx="3"/>
+            <g stroke="#3a3020" stroke-width="0.5">
+              <line x1="20" y1="10" x2="20" y2="90"/><line x1="50" y1="10" x2="50" y2="90"/>
+              <line x1="80" y1="10" x2="80" y2="90"/>
+              <line x1="10" y1="20" x2="90" y2="20"/><line x1="10" y1="50" x2="90" y2="50"/>
+              <line x1="10" y1="80" x2="90" y2="80"/>
+            </g>
+            <circle cx="50" cy="50" r="12" fill="#1a1a1a"/>
+            <circle cx="50" cy="20" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+            <circle cx="20" cy="50" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+            <circle cx="80" cy="50" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+            <circle cx="50" cy="80" r="4" fill="none" stroke="#e53935" stroke-width="2.5"/>
+            <text x="50" y="98" text-anchor="middle" font-size="7" fill="#e53935" font-weight="bold" font-family="sans-serif">アタリ！残り1</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div>
+      <h4>呼吸点の数え方</h4>
+      <ul>
+        <li>盤の中央：<strong>最大4つ</strong></li>
+        <li>辺の上：<strong>最大3つ</strong></li>
+        <li>隅：<strong>最大2つ</strong></li>
+      </ul>
+
+      <h4>キーワード</h4>
+      <div class="card">
+        <ul style="list-style: none; padding: 0;">
+          <li>🔴 <strong>アタリ</strong>：呼吸点が残り1つの状態</li>
+          <li>⬛ <strong>取り上げ</strong>：呼吸点が0になり石を除去</li>
+          <li>🔗 <strong>ツナギ</strong>：味方の石同士を連結させる</li>
+          <li>✂️ <strong>キリ</strong>：相手の石の連結を断つ</li>
+        </ul>
+      </div>
+
+      <div class="warn">連結した石のグループは<strong>呼吸点を共有</strong>します。グループ全体の呼吸点が0になるまで取られません。</div>
+    </div>
+  </div>
+
+  <h2><span class="num">4</span> 着手禁止点</h2>
+  <div class="cols-2">
+    <div>
+      <p>自分の石を置いた瞬間にその石（またはグループ）の呼吸点が0になる場所には<strong>打つことができません</strong>（自殺手の禁止）。</p>
+      <p>ただし例外があります：その一手で<strong>相手の石を取れる場合</strong>は打つことができます。</p>
+    </div>
+    <div>
+      <div class="goban-wrap">
+        <svg width="340" height="150" viewBox="0 0 180 80">
+          <rect x="0" y="0" width="80" height="80" fill="#dcb35c" rx="3"/>
+          <g stroke="#3a3020" stroke-width="0.5">
+            <line x1="20" y1="10" x2="20" y2="70"/><line x1="40" y1="10" x2="40" y2="70"/><line x1="60" y1="10" x2="60" y2="70"/>
+            <line x1="10" y1="20" x2="70" y2="20"/><line x1="10" y1="40" x2="70" y2="40"/><line x1="10" y1="60" x2="70" y2="60"/>
+          </g>
+          <circle cx="40" cy="20" r="9" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+          <circle cx="20" cy="40" r="9" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+          <circle cx="60" cy="40" r="9" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+          <circle cx="40" cy="60" r="9" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+          <text x="40" y="43" text-anchor="middle" font-size="12" fill="#e53935" font-weight="bold" font-family="sans-serif">✕</text>
+          <text x="40" y="78" text-anchor="middle" font-size="7" fill="#e53935" font-family="sans-serif">打てない</text>
+          <g transform="translate(100,0)">
+            <rect x="0" y="0" width="80" height="80" fill="#dcb35c" rx="3"/>
+            <g stroke="#3a3020" stroke-width="0.5">
+              <line x1="20" y1="10" x2="20" y2="70"/><line x1="40" y1="10" x2="40" y2="70"/><line x1="60" y1="10" x2="60" y2="70"/>
+              <line x1="10" y1="20" x2="70" y2="20"/><line x1="10" y1="40" x2="70" y2="40"/><line x1="10" y1="60" x2="70" y2="60"/>
+            </g>
+            <circle cx="40" cy="20" r="9" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+            <circle cx="20" cy="40" r="9" fill="#1a1a1a"/>
+            <circle cx="60" cy="40" r="9" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+            <circle cx="40" cy="60" r="9" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+            <circle cx="20" cy="20" r="9" fill="#1a1a1a"/>
+            <circle cx="20" cy="60" r="9" fill="#1a1a1a"/>
+            <text x="40" y="43" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold" font-family="sans-serif">○</text>
+            <text x="40" y="78" text-anchor="middle" font-size="7" fill="#4caf50" font-family="sans-serif">取れるのでOK</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <h2><span class="num">5</span> コウ（劫）</h2>
+  <div class="cols-32">
+    <div>
+      <p>互いに1つの石を交互に取り返し続けると永遠に終わらないため、<strong>コウのルール</strong>が存在します。</p>
+      <div class="highlight-box">
+        <strong>コウのルール：</strong>相手が石を取った直後、<strong>すぐに取り返すことはできない</strong>。必ず1手以上、別の場所に打ってからでないと取り返せない。
+      </div>
+      <p class="mt-2">この「別の場所に打つ手」を<strong>「コウ立て」</strong>と呼びます。コウ立ての解決は中級以上の重要テーマです。</p>
+    </div>
+    <div>
+      <div class="goban-wrap">
+        <svg width="280" height="180" viewBox="0 0 140 90">
+          <rect x="0" y="0" width="140" height="90" fill="#dcb35c" rx="3"/>
+          <g stroke="#3a3020" stroke-width="0.5">
+            <line x1="20" y1="10" x2="20" y2="80"/><line x1="40" y1="10" x2="40" y2="80"/>
+            <line x1="60" y1="10" x2="60" y2="80"/><line x1="80" y1="10" x2="80" y2="80"/>
+            <line x1="100" y1="10" x2="100" y2="80"/><line x1="120" y1="10" x2="120" y2="80"/>
+            <line x1="10" y1="20" x2="130" y2="20"/><line x1="10" y1="40" x2="130" y2="40"/>
+            <line x1="10" y1="60" x2="130" y2="60"/><line x1="10" y1="80" x2="130" y2="80"/>
+          </g>
+          <circle cx="40" cy="20" r="8" fill="#1a1a1a"/>
+          <circle cx="60" cy="20" r="8" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+          <circle cx="80" cy="20" r="8" fill="#1a1a1a"/>
+          <circle cx="40" cy="40" r="8" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+          <circle cx="80" cy="40" r="8" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+          <circle cx="60" cy="60" r="8" fill="#1a1a1a"/>
+          <rect x="53" y="33" width="14" height="14" fill="none" stroke="#e53935" stroke-width="2" rx="2"/>
+          <text x="60" y="43" text-anchor="middle" font-size="7" fill="#e53935" font-weight="bold" font-family="sans-serif">コウ</text>
+          <text x="70" y="88" text-anchor="middle" font-size="7" fill="#3a3020" font-family="sans-serif">▲ コウの形</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- P3: 生と死 -->
+<!-- ============================================================ -->
+<div class="page">
+  <h2><span class="num">6</span> 生と死 — 二眼で生きる</h2>
+
+  <div class="cols-2">
+    <div>
+      <p>囲碁で最も重要な概念の一つが<strong>「生」と「死」</strong>です。石のグループは内部に<strong>2つ以上の「眼（め）」</strong>を持つと、絶対に取られなくなります。</p>
+
+      <h4>眼（め）とは？</h4>
+      <p>石のグループに囲まれた空点のこと。相手はそこに打てない（着手禁止点になる）ため、呼吸点が永久に残ります。</p>
+
+      <div class="highlight-box">
+        <strong>二眼の法則：</strong><br>
+        ✅ <strong>2つ以上の眼</strong> → 永遠に生きている<br>
+        ❌ <strong>1つの眼</strong>か<strong>眼なし</strong> → 最終的に取られる（死）
+      </div>
+
+      <h4>欠け眼（かけめ）</h4>
+      <p>一見眼に見えるが、相手に打たれると眼でなくなる不完全な眼。死活判断の際に注意が必要です。</p>
+    </div>
+    <div>
+      <div class="goban-wrap">
+        <svg width="340" height="200" viewBox="0 0 170 100">
+          <rect x="0" y="0" width="170" height="100" fill="#dcb35c" rx="3"/>
+          <g stroke="#3a3020" stroke-width="0.5">
+            <line x1="15" y1="15" x2="15" y2="85"/><line x1="35" y1="15" x2="35" y2="85"/>
+            <line x1="55" y1="15" x2="55" y2="85"/><line x1="75" y1="15" x2="75" y2="85"/>
+            <line x1="95" y1="15" x2="95" y2="85"/><line x1="115" y1="15" x2="115" y2="85"/>
+            <line x1="135" y1="15" x2="135" y2="85"/><line x1="155" y1="15" x2="155" y2="85"/>
+            <line x1="10" y1="15" x2="160" y2="15"/><line x1="10" y1="35" x2="160" y2="35"/>
+            <line x1="10" y1="55" x2="160" y2="55"/><line x1="10" y1="75" x2="160" y2="75"/>
+            <line x1="10" y1="85" x2="160" y2="85"/>
+          </g>
+          <circle cx="35" cy="35" r="9" fill="#1a1a1a"/>
+          <circle cx="55" cy="35" r="9" fill="#1a1a1a"/>
+          <circle cx="75" cy="35" r="9" fill="#1a1a1a"/>
+          <circle cx="95" cy="35" r="9" fill="#1a1a1a"/>
+          <circle cx="115" cy="35" r="9" fill="#1a1a1a"/>
+          <circle cx="35" cy="55" r="9" fill="#1a1a1a"/>
+          <circle cx="75" cy="55" r="9" fill="#1a1a1a"/>
+          <circle cx="115" cy="55" r="9" fill="#1a1a1a"/>
+          <circle cx="35" cy="75" r="9" fill="#1a1a1a"/>
+          <circle cx="55" cy="75" r="9" fill="#1a1a1a"/>
+          <circle cx="75" cy="75" r="9" fill="#1a1a1a"/>
+          <circle cx="95" cy="75" r="9" fill="#1a1a1a"/>
+          <circle cx="115" cy="75" r="9" fill="#1a1a1a"/>
+          <text x="55" y="59" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold" font-family="sans-serif">眼</text>
+          <text x="95" y="59" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold" font-family="sans-serif">眼</text>
+          <text x="85" y="96" text-anchor="middle" font-size="7" fill="#3a3020" font-family="sans-serif">▲ 二眼で「生き」の形</text>
+        </svg>
+      </div>
+
+      <div class="tip">死活問題（詰碁）を解くことが、棋力上達への最短ルートです！</div>
+    </div>
+  </div>
+</div>
+
+<!-- P4b: 対局の流れ -->
+<div class="page">
+  <h2><span class="num">7</span> 対局の流れ</h2>
+
+  <div class="cols-3">
+    <div class="card">
+      <h4>① 対局開始</h4>
+      <ul>
+        <li><strong>黒が先手</strong>で始まる</li>
+        <li>「にぎり」で黒白を決定（一方が白石を握り、もう一方が偶数か奇数かを当てる方法）</li>
+        <li>交互に1手ずつ打つ</li>
+        <li>パス（手を打たない）も可能</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>② 対局中の3段階</h4>
+      <ul>
+        <li><strong>序盤（布石）</strong>：陣地の骨格作り</li>
+        <li><strong>中盤（戦い）</strong>：石の攻め合い・陣地拡大</li>
+        <li><strong>終盤（ヨセ）</strong>：陣地の境界確定</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>③ 終局</h4>
+      <ul>
+        <li>両者が連続パスで終局</li>
+        <li>死石を取り除く</li>
+        <li>陣地を数える</li>
+        <li>コミを加算し勝敗決定</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2><span class="num">8</span> コミとハンディキャップ</h2>
+  <div class="cols-2">
+    <div>
+      <h4>コミ</h4>
+      <p>黒が先手の有利さを補うため、白に加算される点数。日本ルールでは<strong>6目半</strong>が標準。これにより引き分け（ジゴ）がなくなります。</p>
+    </div>
+    <div>
+      <h4>置碁（おきご）</h4>
+      <p>実力差がある場合のハンデ。弱い方が黒を持ち、<strong>あらかじめ2〜9個の石を置いて</strong>から対局を始めます。段級位の差に応じて石数が決まります。</p>
+    </div>
+  </div>
+
+  <div class="warn">日本ルール（地を数える）と中国ルール（地+生きている石を数える）で勝敗の計算方法が異なりますが、結果はほぼ同じになります。</div>
+
+  <h2><span class="num">✦</span> 次の一手 — 判断フロー</h2>
+  <div class="highlight-box">
+    <strong>「どこに打てばいい？」と迷ったらこの順番で考えよう！</strong>
+  </div>
+  <div class="cols-3" style="margin-top:1mm;">
+    <div class="card" style="text-align:center;">
+      <h4>❶ 緊急？</h4>
+      <p>アタリや切られそうな石はない？<br>→ <strong>あれば最優先で対応</strong></p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <h4>❷ 空き隅？</h4>
+      <p>誰も打っていない隅は？<br>→ <strong>空いてたら隅に打つ</strong></p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <h4>❸ 攻め or 守り？</h4>
+      <p>弱い石は？（自分→守り / 相手→攻め）<br>→ <strong>弱い石から動く</strong></p>
+    </div>
+  </div>
+  <div class="cols-3">
+    <div class="card" style="text-align:center;">
+      <h4>❹ 大場？</h4>
+      <p>大きな辺が空いてる？<br>→ <strong>辺に展開して陣地拡大</strong></p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <h4>❺ 境界線？</h4>
+      <p>陣地の境目が決まってない？<br>→ <strong>ヨセで境界を確定</strong></p>
+    </div>
+    <div class="card" style="text-align:center;">
+      <h4>❻ パス？</h4>
+      <p>打つところがなくなったら<br>→ <strong>パスして終局へ</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- P4: 戦略ブック — 序盤 -->
+<!-- ============================================================ -->
+<div class="page">
+  <h1 style="font-size:24pt; margin-bottom:1mm;">第2部：戦略ブック</h1>
+  <div class="subtitle">初心者から上級者まで使える囲碁の戦略・テクニック集</div>
+
+  <h2><span class="num">1</span> レベル別 戦略マップ</h2>
+
+  <table>
+    <tr>
+      <th width="15%">レベル</th>
+      <th width="15%">棋力目安</th>
+      <th>重点学習テーマ</th>
+    </tr>
+    <tr>
+      <td><span class="badge badge-beginner">入門</span></td>
+      <td>30〜20級</td>
+      <td>ルール理解、石の取り方、隅を使った対局</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-beginner">初級</span></td>
+      <td>20〜10級</td>
+      <td>基本手筋、死活の初歩、隅の囲い方</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-inter">中級</span></td>
+      <td>10〜1級</td>
+      <td>布石の基本、石の形、攻めと守りの判断</td>
+    </tr>
+    <tr>
+      <td><span class="badge badge-adv">上級</span></td>
+      <td>初段〜</td>
+      <td>定石、厚みと模様、打ち込み、ヨセの計算</td>
+    </tr>
+  </table>
+
+  <h2><span class="num">2</span> 序盤の戦略 — 布石の考え方</h2>
+
+  <div class="cols-32">
+    <div>
+      <h3>隅→辺→中央の原則</h3>
+      <p>碁盤では、少ない石で効率よく地を囲める場所は<strong>隅 > 辺 > 中央</strong>の順です。</p>
+
+      <div class="card">
+        <h4>地を囲うのに必要な石の数</h4>
+        <table>
+          <tr><th>場所</th><th>9目囲うのに必要な石</th></tr>
+          <tr><td>隅</td><td><strong>6個</strong>（最も効率的）</td></tr>
+          <tr><td>辺</td><td><strong>9個</strong></td></tr>
+          <tr><td>中央</td><td><strong>12個</strong>（最も非効率）</td></tr>
+        </table>
+      </div>
+
+      <h3>一手目の定位置</h3>
+      <p>最初の数手は<strong>隅の星（4-4）</strong>や<strong>小目（3-4）</strong>に打つのが基本。これらは何千年もの研究で効率的と証明されています。</p>
+
+      <div class="tip">序盤では第3線と第4線のバランスを意識しよう。第3線は地を確保、第4線は中央への影響力を持つ。</div>
+    </div>
+    <div>
+      <div class="goban-wrap">
+        <svg width="300" height="310" viewBox="0 0 300 310">
+          <rect x="0" y="0" width="300" height="300" fill="#dcb35c" rx="4"/>
+          <g stroke="#3a3020" stroke-width="0.5">
+            <line x1="15" y1="15" x2="15" y2="285"/><line x1="30" y1="15" x2="30" y2="285"/>
+            <line x1="45" y1="15" x2="45" y2="285"/><line x1="60" y1="15" x2="60" y2="285"/>
+            <line x1="75" y1="15" x2="75" y2="285"/><line x1="90" y1="15" x2="90" y2="285"/>
+            <line x1="105" y1="15" x2="105" y2="285"/><line x1="120" y1="15" x2="120" y2="285"/>
+            <line x1="135" y1="15" x2="135" y2="285"/><line x1="150" y1="15" x2="150" y2="285"/>
+            <line x1="165" y1="15" x2="165" y2="285"/><line x1="180" y1="15" x2="180" y2="285"/>
+            <line x1="195" y1="15" x2="195" y2="285"/><line x1="210" y1="15" x2="210" y2="285"/>
+            <line x1="225" y1="15" x2="225" y2="285"/><line x1="240" y1="15" x2="240" y2="285"/>
+            <line x1="255" y1="15" x2="255" y2="285"/><line x1="270" y1="15" x2="270" y2="285"/>
+            <line x1="285" y1="15" x2="285" y2="285"/>
+            <line x1="15" y1="15" x2="285" y2="15"/><line x1="15" y1="30" x2="285" y2="30"/>
+            <line x1="15" y1="45" x2="285" y2="45"/><line x1="15" y1="60" x2="285" y2="60"/>
+            <line x1="15" y1="75" x2="285" y2="75"/><line x1="15" y1="90" x2="285" y2="90"/>
+            <line x1="15" y1="105" x2="285" y2="105"/><line x1="15" y1="120" x2="285" y2="120"/>
+            <line x1="15" y1="135" x2="285" y2="135"/><line x1="15" y1="150" x2="285" y2="150"/>
+            <line x1="15" y1="165" x2="285" y2="165"/><line x1="15" y1="180" x2="285" y2="180"/>
+            <line x1="15" y1="195" x2="285" y2="195"/><line x1="15" y1="210" x2="285" y2="210"/>
+            <line x1="15" y1="225" x2="285" y2="225"/><line x1="15" y1="240" x2="285" y2="240"/>
+            <line x1="15" y1="255" x2="285" y2="255"/><line x1="15" y1="270" x2="285" y2="270"/>
+            <line x1="15" y1="285" x2="285" y2="285"/>
+          </g>
+          <circle cx="60" cy="60" r="3" fill="#3a3020"/><circle cx="150" cy="60" r="3" fill="#3a3020"/>
+          <circle cx="240" cy="60" r="3" fill="#3a3020"/><circle cx="60" cy="150" r="3" fill="#3a3020"/>
+          <circle cx="150" cy="150" r="3" fill="#3a3020"/><circle cx="240" cy="150" r="3" fill="#3a3020"/>
+          <circle cx="60" cy="240" r="3" fill="#3a3020"/><circle cx="150" cy="240" r="3" fill="#3a3020"/>
+          <circle cx="240" cy="240" r="3" fill="#3a3020"/>
+          <circle cx="240" cy="60" r="10" fill="#1a1a1a"/>
+          <text x="240" y="64" text-anchor="middle" font-size="11" fill="white" font-weight="bold" font-family="sans-serif">1</text>
+          <circle cx="60" cy="240" r="10" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+          <text x="60" y="244" text-anchor="middle" font-size="11" fill="#333" font-weight="bold" font-family="sans-serif">2</text>
+          <circle cx="240" cy="240" r="10" fill="#1a1a1a"/>
+          <text x="240" y="244" text-anchor="middle" font-size="11" fill="white" font-weight="bold" font-family="sans-serif">3</text>
+          <circle cx="60" cy="60" r="10" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+          <text x="60" y="64" text-anchor="middle" font-size="11" fill="#333" font-weight="bold" font-family="sans-serif">4</text>
+          <text x="150" y="306" text-anchor="middle" font-size="10" fill="#3a3020" font-family="sans-serif">▲ 布石の例：四隅の星を占める</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- P5: 石の形 -->
+<!-- ============================================================ -->
+<div class="page">
+  <h2><span class="num">3</span> 石の形 — 良い形と悪い形</h2>
+
+  <p>石の「形」は効率に直結します。良い形を覚えることで、より少ない手数で強い陣形を作れます。</p>
+
+  <div class="cols-2">
+    <div class="card">
+      <h4>✅ 良い形</h4>
+      <table>
+        <tr><th>形の名前</th><th>特徴</th></tr>
+        <tr><td><strong>ケイマ</strong></td><td>桂馬の形。軽くて柔軟、連絡と展開に優れる</td></tr>
+        <tr><td><strong>コスミ</strong></td><td>斜めに1路。堅実で相手に切られにくい</td></tr>
+        <tr><td><strong>一間トビ</strong></td><td>1路飛び。スピード重視の展開に有効</td></tr>
+        <tr><td><strong>ノビ</strong></td><td>直線的な伸び。堅くて崩れにくい</td></tr>
+        <tr><td><strong>ポン抜き</strong></td><td>相手の石を取った形。四方に強い影響力を持つ（「ポン抜き30目」の格言あり）</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4>❌ 悪い形</h4>
+      <table>
+        <tr><th>形の名前</th><th>なぜ悪いか</th></tr>
+        <tr><td><strong>空き三角</strong></td><td>石の効率が悪い。同じ効果をより少ない石で得られる</td></tr>
+        <tr><td><strong>ダンゴ石</strong></td><td>石が固まりすぎて効率が悪い。眼も作りにくい</td></tr>
+        <tr><td><strong>裂かれ形</strong></td><td>石が分断されて両方弱くなる。キリに注意</td></tr>
+        <tr><td><strong>重い形</strong></td><td>逃げなければいけない石が多すぎる状態</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>💡 形の黄金法則：</strong>「相手の急所は自分の急所」— 相手が打ちたい場所に先に打つことが、良い形を作る秘訣です。
+  </div>
+</div>
+
+<!-- P6b: 中盤戦略 -->
+<div class="page">
+  <h2><span class="num">4</span> 中盤の戦略 — 攻めと守りの原則</h2>
+
+  <div class="cols-32">
+    <div>
+      <h3>攻めの5大原則</h3>
+      <ol>
+        <li><strong>弱い石から動く</strong>：自分の弱い石を先に安定させてから攻める</li>
+        <li><strong>相手の弱い石を狙う</strong>：眼がない、孤立している石を攻撃対象に</li>
+        <li><strong>封鎖して追い込む</strong>：相手の石を中央や辺に追いやりながら自分の勢力を拡大</li>
+        <li><strong>分断して攻める</strong>：キリを使って相手の石を分断し、弱い方を集中攻撃</li>
+        <li><strong>中央をめざす</strong>：中盤では第5線以上に展開し、立体的に考える</li>
+      </ol>
+
+      <h3>守りの3大原則</h3>
+      <ol>
+        <li><strong>二眼を確保</strong>：攻められたらまず2つの眼を作ることを目指す</li>
+        <li><strong>連絡していく</strong>：孤立した石を味方と繋いで安全にする</li>
+        <li><strong>根拠を持つ</strong>：辺や隅にスペースを確保して安定する</li>
+      </ol>
+
+      <div class="tip">「攻めは最大の守り」— 相手を攻めながら自分の陣地を自然に広げるのが理想の打ち方です。</div>
+    </div>
+    <div>
+      <div class="card">
+        <h4>中盤の重要格言</h4>
+        <div style="font-size:13pt;">
+          <p>📌 <strong>「厚みに近づくな」</strong><br>相手の強い石の近くに地を作ろうとしない</p>
+          <p>📌 <strong>「二目の頭見ずハネよ」</strong><br>相手の二目の頭（先端）をハネて形を崩す</p>
+          <p>📌 <strong>「切った方を取れ」</strong><br>キリが入ったら、分断した方が有利になることが多い</p>
+          <p>📌 <strong>「ツケにはハネよ、ハネにはノビよ」</strong><br>相手の手に対する基本的な応手の定石</p>
+          <p>📌 <strong>「一に空き隅、二にカカリ、三にシマリ」</strong><br>序盤の優先順位の指針</p>
+          <p>📌 <strong>「急場は大場に優先する」</strong><br>戦いが起きている場所の方が大きい場合が多い</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- P6: 手筋 -->
+<!-- ============================================================ -->
+<div class="page">
+  <h2><span class="num">5</span> 手筋（テスジ）— 実戦テクニック集</h2>
+
+  <p>手筋とは、局面を有利にするための巧みな石の運び方です。以下は全レベルで必須のテクニックです。</p>
+
+  <div class="cols-2">
+    <div class="card">
+      <h4><span class="badge badge-beginner">初級</span> 基本手筋</h4>
+      <table>
+        <tr><th width="25%">手筋名</th><th>説明</th></tr>
+        <tr><td><strong>シチョウ</strong></td><td>アタリを連続して階段状に追いかけて石を取る。盤端まで追い詰める。シチョウが有効かは遠くの石の配置で決まる。</td></tr>
+        <tr><td><strong>ゲタ</strong></td><td>相手の石を網で覆うように包み込んで取る。シチョウが効かない時の代替手段。</td></tr>
+        <tr><td><strong>オイオトシ</strong></td><td>アタリをかけ、相手がツイでも再びアタリになり、最終的に石を取り切る手筋。</td></tr>
+        <tr><td><strong>ウッテガエシ</strong></td><td>相手にわざと石を取らせた後、その場所に打ち返して相手の石を取る手筋。</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h4><span class="badge badge-inter">中級</span><span class="badge badge-adv">上級</span> 応用手筋</h4>
+      <table>
+        <tr><th width="25%">手筋名</th><th>説明</th></tr>
+        <tr><td><strong>ダメヅマリ</strong></td><td>石の周囲の空点（ダメ）が埋まり、石が窘屈な状態。攻め合いで致命的になる。</td></tr>
+        <tr><td><strong>ホウリコミ</strong></td><td>相手の陣地内に石を投げ込み、眼を奪う。死活で頻出。</td></tr>
+        <tr><td><strong>サガリ</strong></td><td>辺から下の線へ下がる手。地を確定し、相手の侵入を防ぐ。</td></tr>
+        <tr><td><strong>ワリコミ</strong></td><td>相手の石の間に割り込んで分断する攻撃的な手筋。</td></tr>
+        <tr><td><strong>ハサミツケ</strong></td><td>相手の石を挟むように打ち、行動範囲を制限する。</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- P7b: 死活パターン -->
+<div class="page">
+  <h2><span class="num">6</span> 死活の基本パターン</h2>
+
+  <p>「死活（しかつ）」は石の生き死にを判断する技術です。詰碁を繰り返し解くことが最も効果的な上達法です。</p>
+
+  <div class="cols-3">
+    <div class="card">
+      <h4>🟢 生きの基本形</h4>
+      <ul style="font-size:13pt;">
+        <li><strong>直四（ちょくよん）</strong>：一列に4目の空間＝確実に生き</li>
+        <li><strong>曲がり四目（まがりよんもく）</strong>：L字に4目＝基本的に生き</li>
+        <li><strong>五目以上</strong>：5目以上の空間は基本的に生き</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🔴 死の基本形</h4>
+      <ul style="font-size:13pt;">
+        <li><strong>直三（ちょくさん）</strong>：一列に3目＝急所（中央）に打たれると死</li>
+        <li><strong>曲がり三（まがりさん）</strong>：L字に3目＝急所に打たれると死</li>
+        <li><strong>二目</strong>：2目の空間は絶対に生きられない</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>⚡ 重要な形</h4>
+      <ul style="font-size:13pt;">
+        <li><strong>セキ</strong>：双方取れない形。地はゼロ扱い</li>
+        <li><strong>万年コウ</strong>：コウの形で無限に争い続ける</li>
+        <li><strong>三目ナカデ</strong>：真ん中に打って眼を奪う急所</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="highlight-box mt-2">
+    <strong>ナカデの急所表：</strong>
+    <div class="cols-3 mt-2" style="font-size:13pt; text-align:center;">
+      <div>三目 → <strong>中央の1点</strong></div>
+      <div>四目 → <strong>2-2の点</strong></div>
+      <div>五目 → <strong>中央の1点</strong></div>
+    </div>
+  </div>
+
+  <div class="tip mt-2">毎日5〜10問の詰碁を解く習慣をつけましょう。スマホアプリやWebサイトで無料で練習できます。</div>
+</div>
+
+<!-- ============================================================ -->
+<!-- P7: ヨセ -->
+<!-- ============================================================ -->
+<div class="page">
+  <h2><span class="num">7</span> 終盤の戦略 — ヨセの技術</h2>
+
+  <div class="cols-2">
+    <div>
+      <p>ヨセとは終盤で陣地の境界線を争う段階です。1目2目の差が勝敗を分ける重要な局面です。</p>
+
+      <h3>ヨセの種類</h3>
+      <table>
+        <tr><th>種類</th><th>説明</th><th>計算</th></tr>
+        <tr><td><strong>先手ヨセ</strong></td><td>打つと相手が受けざるを得ない</td><td>そのままの目数</td></tr>
+        <tr><td><strong>後手ヨセ</strong></td><td>打っても相手が受けなくてよい</td><td>出入り計算の半分</td></tr>
+        <tr><td><strong>両先手</strong></td><td>どちらが打っても先手になる</td><td>最優先で打つ</td></tr>
+        <tr><td><strong>逆ヨセ</strong></td><td>相手の先手を阻止する手</td><td>先手分の価値あり</td></tr>
+      </table>
+
+      <h3>ヨセの優先順位</h3>
+      <ol>
+        <li><strong>両先手</strong> → 絶対に先に打つ</li>
+        <li><strong>先手ヨセ</strong>（大きい順）</li>
+        <li><strong>後手ヨセ</strong>（大きい順、出入り計算で比較）</li>
+      </ol>
+    </div>
+    <div>
+      <div class="card">
+        <h4>出入り計算の例</h4>
+        <p style="font-size:13pt;">黒が打つと黒地が<strong>3目増え</strong>、白が打つと白地が<strong>3目増える</strong>場合：</p>
+        <div class="highlight-box" style="font-size:14pt; text-align:center;">
+          出入り = 3 + 3 = <strong>6目</strong><br>
+          後手の価値 = 6 ÷ 2 = <strong>3目</strong>
+        </div>
+        <p class="small mt-2">先手3目のヨセと後手6目のヨセは同じ価値。これを知っているとヨセの判断が正確になります。</p>
+      </div>
+
+      <div class="adv">ヨセは「計算力」がものを言う分野。1目の差で勝敗が決まるプロの世界では、ヨセの技術が最も重要と言われています。</div>
+    </div>
+  </div>
+</div>
+
+<!-- P8b: 厚みと模様 -->
+<div class="page">
+  <h2><span class="num">8</span> 上級戦略 — 厚みと模様</h2>
+
+  <div class="cols-2">
+    <div>
+      <h3>厚み（あつみ）</h3>
+      <p><strong>厚み</strong>とは、取られる心配のない強い石の壁のこと。厚みそのものは地にならなくても、<strong>周囲に絶大な影響力</strong>を発揮します。</p>
+      <div class="card">
+        <h4>厚みの活用法</h4>
+        <ul style="font-size:13pt;">
+          <li>厚みに向かって相手を追い込み、攻めの効率を上げる</li>
+          <li>厚みの影響圏内で大きな模様を築く</li>
+          <li>厚みの力で相手の石を圧迫し、薄くする</li>
+        </ul>
+      </div>
+      <div class="warn">絶対に「厚みに近づくな」！厚みの近くに自分の地を作ろうとすると、厚みの価値が消えます。</div>
+    </div>
+    <div>
+      <h3>模様（もよう）</h3>
+      <p><strong>模様</strong>とは、まだ確定していないが将来地になる可能性がある広い領域。相手が侵入してこなければそのまま大きな地になります。</p>
+      <div class="card">
+        <h4>模様の打ち方</h4>
+        <ul style="font-size:13pt;">
+          <li><strong>第4線以上</strong>に展開し、広い枠組みを作る</li>
+          <li>打ち込まれたら<strong>攻めて利益を得る</strong></li>
+          <li>模様を完全に囲おうとしない（過剰防衛は損）</li>
+        </ul>
+      </div>
+      <h3>打ち込みと消し</h3>
+      <p>相手の模様が大きくなりすぎたら<strong>打ち込み</strong>（深く入る）や<strong>消し</strong>（浅く入って影響力を削ぐ）で対抗します。判断力が問われる上級テクニックです。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- P8: 定石 -->
+<!-- ============================================================ -->
+<div class="page">
+  <h2><span class="num">9</span> 定石（じょうせき）入門</h2>
+
+  <p>定石とは、序盤の隅での石の運び方で、<strong>両者が最善を尽くした場合の手順</strong>のこと。何百年もの研究で確立されています。</p>
+
+  <div class="cols-2">
+    <div class="card">
+      <h4>代表的な定石パターン</h4>
+      <table>
+        <tr><th>定石名</th><th>特徴</th><th>レベル</th></tr>
+        <tr><td><strong>ツケヒキ定石</strong></td><td>堅実。初心者向け</td><td><span class="badge badge-beginner">初級</span></td></tr>
+        <tr><td><strong>一間高ガカリ</strong></td><td>最も基本的なカカリ</td><td><span class="badge badge-beginner">初級</span></td></tr>
+        <tr><td><strong>ハサミ定石</strong></td><td>積極的な戦い志向</td><td><span class="badge badge-inter">中級</span></td></tr>
+        <tr><td><strong>三々入り定石</strong></td><td>隅の地を直接奪う</td><td><span class="badge badge-inter">中級</span></td></tr>
+        <tr><td><strong>大ナダレ定石</strong></td><td>複雑な戦闘型</td><td><span class="badge badge-adv">上級</span></td></tr>
+        <tr><td><strong>AI定石</strong></td><td>AIが開発した新手順</td><td><span class="badge badge-adv">上級</span></td></tr>
+      </table>
+    </div>
+    <div>
+      <div class="warn">定石を「暗記」するのではなく、<strong>なぜその手が最善なのか</strong>を理解することが大切です。丸暗記は応用が利きません。</div>
+
+      <h4>AI時代の定石</h4>
+      <p style="font-size:13pt;">AlphaGoの登場以降、従来の定石が見直され、新しい手順が次々と発見されています。特に<strong>三々への早い段階での入り</strong>や、<strong>肩ツキの多用</strong>など、AI由来の戦術が主流になりつつあります。</p>
+
+      <div class="tip">定石は3〜5種類の基本パターンを覚えれば十分。まずは「ツケヒキ」と「一間高ガカリ」から学びましょう。</div>
+    </div>
+  </div>
+</div>
+
+<!-- P9b: ロードマップ -->
+<div class="page">
+  <h2><span class="num">10</span> 棋力向上のためのロードマップ</h2>
+
+  <div class="cols-2">
+    <div class="card">
+      <h4>🎯 入門〜初級（30級→10級）</h4>
+      <ul style="font-size:13pt;">
+        <li>まず隅で小さな対局を繰り返す</li>
+        <li>基本的な石の取り方を体で覚える</li>
+        <li>初級の詰碁を毎日5問解く</li>
+        <li>19路盤全体を使った対局に慣れる</li>
+        <li>基本手筋（シチョウ・ゲタ）をマスター</li>
+      </ul>
+      <h4>📈 中級（10級→1級）</h4>
+      <ul style="font-size:13pt;">
+        <li>19路盤での実戦を重ねる</li>
+        <li>基本定石を3〜5つ覚える</li>
+        <li>布石の考え方を学ぶ</li>
+        <li>中級詰碁を毎日10問</li>
+        <li>プロの棋譜を並べる</li>
+        <li>攻めと守りのバランスを意識</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🏆 上級・有段者（初段〜）</h4>
+      <ul style="font-size:13pt;">
+        <li>厚みと模様の戦略を理解</li>
+        <li>ヨセの計算を正確に</li>
+        <li>打ち込み・消しの判断力を磨く</li>
+        <li>高度な死活・手筋を習得</li>
+        <li>AI分析で自分の弱点を発見</li>
+        <li>大会に参加して実戦経験を積む</li>
+      </ul>
+      <h4>📚 おすすめ学習リソース</h4>
+      <table style="font-size:13pt;">
+        <tr><th>種類</th><th>おすすめ</th></tr>
+        <tr><td>アプリ</td><td>囲碁であそぼ！、詰碁プロ</td></tr>
+        <tr><td>オンライン</td><td>OGS、KGS、パンダネット、野狐囲碁</td></tr>
+        <tr><td>書籍</td><td>ヒカルの碁、基本手筋事典</td></tr>
+        <tr><td>AI</td><td>KataGo、Leela Zero</td></tr>
+        <tr><td>公式</td><td>日本棋院（教室・イベント）</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="highlight-box mt-2 text-center">
+    <strong style="font-size:15pt;">囲碁上達の黄金法則</strong><br>
+    <span style="font-size:14pt;">📖 詰碁を解く × 🎮 実戦を打つ × 📝 棋譜を並べる = 着実な上達！</span>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- 最終ページ：クイックリファレンス -->
+<!-- ============================================================ -->
+<div class="page">
+  <h2 style="margin-top:0;"><span class="num">★</span> クイックリファレンスシート</h2>
+
+  <div class="cols-2">
+    <div>
+      <h3>基本ルール チェックリスト</h3>
+      <div class="card">
+        <ul style="list-style: none; padding: 0;">
+          <li>☐ 石は線と線の<strong>交点</strong>に置く</li>
+          <li>☐ <strong>黒が先手</strong>で交互に打つ</li>
+          <li>☐ <strong>陣地</strong>（囲った交点）が多い方が勝ち</li>
+          <li>☐ 呼吸点ゼロの石は<strong>取り除かれる</strong></li>
+          <li>☐ 自殺手は<strong>禁止</strong>（取れる場合は除く）</li>
+          <li>☐ <strong>コウ</strong>はすぐ取り返せない</li>
+          <li>☐ <strong>二眼</strong>あれば絶対に生き</li>
+          <li>☐ 両者パスで<strong>終局</strong></li>
+          <li>☐ 白にコミ（<strong>6目半</strong>）を加算</li>
+        </ul>
+      </div>
+
+      <h3>格言・原則 早見表</h3>
+      <div class="card">
+        <table style="font-size:12pt;">
+          <tr><th>分類</th><th>格言</th></tr>
+          <tr><td>序盤</td><td>隅→辺→中央の優先順位</td></tr>
+          <tr><td>序盤</td><td>一に空き隅、二にカカリ</td></tr>
+          <tr><td>中盤</td><td>急場は大場に優先する</td></tr>
+          <tr><td>中盤</td><td>弱い石から動く</td></tr>
+          <tr><td>中盤</td><td>厚みに近づくな</td></tr>
+          <tr><td>形</td><td>空き三角を打つな</td></tr>
+          <tr><td>攻め</td><td>攻めは封鎖が基本</td></tr>
+          <tr><td>終盤</td><td>先手ヨセは必ず打つ</td></tr>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>用語集</h3>
+      <div class="card">
+        <table style="font-size:11pt;">
+          <tr><th>用語</th><th>意味</th></tr>
+          <tr><td>アタリ</td><td>呼吸点残り1</td></tr>
+          <tr><td>カカリ</td><td>相手の隅の石に迫る</td></tr>
+          <tr><td>キリ</td><td>石の連結を断つ</td></tr>
+          <tr><td>コウ</td><td>特殊な取り返し規則</td></tr>
+          <tr><td>コミ</td><td>白への加算点（6目半）</td></tr>
+          <tr><td>シチョウ</td><td>階段状に石を追う</td></tr>
+          <tr><td>定石</td><td>最善の手順パターン</td></tr>
+          <tr><td>手筋</td><td>巧みな石の打ち方</td></tr>
+          <tr><td>ツケ</td><td>相手の石にくっつける</td></tr>
+          <tr><td>ツナギ</td><td>味方の石を連結</td></tr>
+          <tr><td>ナカデ</td><td>内部に打って眼を奪う</td></tr>
+          <tr><td>ノビ</td><td>直線に伸ばす</td></tr>
+          <tr><td>ハネ</td><td>斜めに押さえる</td></tr>
+          <tr><td>布石</td><td>序盤の石の配置</td></tr>
+          <tr><td>ホウリコミ</td><td>石を投げ込む手筋</td></tr>
+          <tr><td>模様</td><td>未確定の勢力圏</td></tr>
+          <tr><td>ヨセ</td><td>終盤の境界線争い</td></tr>
+          <tr><td>呼吸点</td><td>石の隣の空き交点</td></tr>
+        </table>
+      </div>
+
+      <h3>段級位の目安</h3>
+      <div class="card">
+        <table style="font-size:11pt;">
+          <tr><th>級位</th><th>レベル感</th></tr>
+          <tr><td>30〜20級</td><td>ルールを覚えたばかり</td></tr>
+          <tr><td>20〜10級</td><td>石の取り方・基本戦略を理解</td></tr>
+          <tr><td>10〜1級</td><td>布石・定石の知識がある</td></tr>
+          <tr><td>初段〜三段</td><td>アマチュア上級者</td></tr>
+          <tr><td>四段〜</td><td>アマチュアトップクラス</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top:3mm; padding-top:3mm; border-top:2px solid var(--c-accent);">
+    <p style="font-size:15pt; font-weight:700; color:var(--c-accent2);">📖 より本格的に学びたい方へ</p>
+    <p style="font-size:13pt; color:var(--c-ink2); margin-top:1mm;">日本囲碁規約に基づいた正式ルール・用語集を<br>下記QRコードからご覧いただけます。</p>
+    <div style="margin:3mm auto; width:30mm; height:30mm; border:2px solid var(--c-accent); border-radius:2mm; display:flex; align-items:center; justify-content:center; background:white;">
+      <span style="font-size:10pt; color:var(--c-ink2);">QRコード</span>
+    </div>
+    <p style="font-size:11pt; color:var(--c-ink2);">囲碁 正式ルール — 日本囲碁規約準拠</p>
+  </div>
+</div>
+
+</body>
+</html>

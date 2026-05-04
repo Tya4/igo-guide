@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>囲碁 戦略ガイド — 実戦で勝つための完全マニュアル</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#faf8f2;--ink:#2c2416;--ink2:#5a4e3a;--accent:#1b5e20;--accent2:#2e7d32;--card:#fffdf6;--bd:#e6dcc8;--tip-bg:#e8f5e9;--tip-bd:#4caf50;--warn-bg:#fff8e1;--warn-bd:#ff9800;--hl:#e8f5e9;--board:#dcb35c;--bline:#3a3020}
+body{font-family:'Noto Sans JP',sans-serif;font-size:19px;line-height:1.85;color:var(--ink);background:#e0e8d8;max-width:960px;margin:0 auto;padding:16px}
+.wrap{background:var(--bg);border-radius:12px;padding:32px 36px;box-shadow:0 4px 30px rgba(0,0,0,.12)}
+.bar{height:4px;background:linear-gradient(90deg,#2e7d32,#43a047,#66bb6a,#2e7d32);border-radius:4px 4px 0 0;margin:-32px -36px 28px}
+h1{font-family:'Noto Serif JP',serif;font-size:38px;color:var(--accent);text-align:center;margin-bottom:6px;letter-spacing:.1em}
+.sub{text-align:center;color:var(--ink2);font-size:17px;margin-bottom:28px}
+h2{font-family:'Noto Serif JP',serif;font-size:28px;color:var(--accent);border-bottom:2px solid var(--accent2);padding-bottom:6px;margin:40px 0 16px;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--accent2);color:#fff;border-radius:50%;font-size:18px;font-family:'Noto Sans JP'}
+h3{font-size:22px;color:var(--ink);margin:18px 0 10px;padding-left:12px;border-left:4px solid var(--accent2)}
+h4{font-size:19px;color:var(--accent);margin:14px 0 8px}
+p{margin-bottom:10px;text-align:justify}
+ul,ol{padding-left:22px;margin-bottom:10px}
+li{margin-bottom:4px}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:14px;margin:10px 0}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);padding:12px 16px;border-radius:0 6px 6px 0;margin:12px 0;font-size:17px}
+.tip::before{content:'💡 '}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);padding:12px 16px;border-radius:0 6px 6px 0;margin:12px 0;font-size:17px}
+.warn::before{content:'⚠️ '}
+.hl{background:var(--hl);border:1px solid #a5d6a7;border-radius:6px;padding:12px 14px;margin:10px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:17px}
+th,td{border:1px solid #d4c9a8;padding:9px 12px}
+th{background:var(--accent2);color:#fff;font-weight:500;text-align:center}
+td{background:var(--card)}
+tr:nth-child(even) td{background:#f3efe5}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.gc{display:flex;justify-content:center;margin:14px 0}
+.gc svg{max-width:100%;height:auto;zoom:1.35}
+.fig{text-align:center;font-size:18px;color:var(--ink2);margin-top:10px;font-weight:500}
+.toc{margin:20px 0}
+.toc-s{font-weight:700;color:var(--accent);font-size:19px;margin:14px 0 8px;padding-left:10px;border-left:4px solid var(--accent2)}
+.toc ul{list-style:none;padding-left:20px}
+.toc li{margin-bottom:5px;font-size:18px}
+.toc li::before{content:'▸ ';color:var(--accent)}
+.toc a{color:var(--ink);text-decoration:none}
+.toc a:hover{color:var(--accent);text-decoration:underline}
+.foot{text-align:center;margin-top:40px;padding:20px;border-top:2px solid var(--bd);color:var(--ink2);font-size:14px}
+@media(max-width:700px){body{font-size:17px;padding:8px}.wrap{padding:18px 14px}.g2,.g3{grid-template-columns:1fr}h1{font-size:28px}h2{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar"></div>
+<h1>囲碁 戦略ガイド</h1>
+<p class="sub">実戦で勝つための完全マニュアル — 入門から有段者まで</p>
+
+<div class="toc">
+<div class="toc-s">目次</div>
+<div class="g2">
+<div>
+<div class="toc-s">第1部 序盤の戦略</div>
+<ul>
+<li><a href="#s1">1. 序盤の考え方</a></li>
+<li><a href="#s2">2. 布石の基本パターン</a></li>
+<li><a href="#s3">3. 定石入門</a></li>
+</ul>
+<div class="toc-s">第2部 中盤の戦略</div>
+<ul>
+<li><a href="#s4">4. 石の形 — 好形と愚形</a></li>
+<li><a href="#s5">5. 攻めの技術</a></li>
+<li><a href="#s6">6. 守りとサバキ</a></li>
+<li><a href="#s7">7. 厚みと模様</a></li>
+</ul>
+</div>
+<div>
+<div class="toc-s">第3部 手筋と死活</div>
+<ul>
+<li><a href="#s8">8. 基本手筋</a></li>
+<li><a href="#s9">9. 死活の急所</a></li>
+<li><a href="#s10">10. 攻め合いの計算</a></li>
+</ul>
+<div class="toc-s">第4部 終盤と上級戦略</div>
+<ul>
+<li><a href="#s11">11. ヨセの技術</a></li>
+<li><a href="#s12">12. 形勢判断</a></li>
+<li><a href="#s13">13. 実戦の格言集</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- ==================== セクション1 ==================== -->
+<h2 id="s1"><span class="n">1</span> 序盤の考え方</h2>
+
+<h3>隅→辺→中央の原則</h3>
+<p>囲碁の序盤は<strong>効率の良い場所から順番に打つ</strong>のが大原則です。同じ石数で最も多くの地を囲えるのが隅、次が辺、最も効率が悪いのが中央です。</p>
+
+<div class="c">
+<h4>なぜ隅が効率的なのか</h4>
+<table>
+<tr><th>場所</th><th>囲うのに必要な石数（約10目）</th><th>効率</th></tr>
+<tr><td>隅</td><td>約6個（盤端が2辺を補助）</td><td>★★★</td></tr>
+<tr><td>辺</td><td>約9個（盤端が1辺を補助）</td><td>★★☆</td></tr>
+<tr><td>中央</td><td>約12個以上（補助なし）</td><td>★☆☆</td></tr>
+</table>
+</div>
+
+<h3>序盤の手順の目安</h3>
+<div class="c">
+<ol>
+<li><strong>空き隅に打つ</strong> — まず4つの隅に石を置く（星・小目・三々・目外し）</li>
+<li><strong>シマリ</strong> — 自分の隅の石を2手目で補強し、隅の地を確保する</li>
+<li><strong>カカリ</strong> — 相手の隅の石に接近して牽制する</li>
+<li><strong>ヒラキ</strong> — 辺に展開して勢力を広げる</li>
+<li><strong>打ち込み・消し</strong> — 相手の模様を制限する</li>
+</ol>
+</div>
+
+<h3>隅の着点と特徴</h3>
+<table>
+<tr><th>着点</th><th>座標</th><th>特徴</th></tr>
+<tr><td>星（ほし）</td><td>4の4</td><td>速度重視。外への影響力が大きい。地は甘い</td></tr>
+<tr><td>小目（こもく）</td><td>3の4 / 4の3</td><td>バランス型。シマリで隅を確保しやすい</td></tr>
+<tr><td>三々（さんさん）</td><td>3の3</td><td>地重視。隅の地を直接確保。外への発展が弱い</td></tr>
+<tr><td>目外し（もくはずし）</td><td>3の5</td><td>変則的。相手の対応を限定する。上級者向け</td></tr>
+<tr><td>高目（たかもく）</td><td>4の5</td><td>外勢重視。非常に特殊な布石</td></tr>
+</table>
+
+<h3>隅の着点 — 図解</h3>
+<div class="gc">
+<svg width="220" height="220" viewBox="0 0 220 220">
+<rect x="5" y="5" width="210" height="210" fill="#dcb35c" rx="4"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="30" y1="30" x2="30" y2="190"/><line x1="70" y1="30" x2="70" y2="190"/><line x1="110" y1="30" x2="110" y2="190"/><line x1="150" y1="30" x2="150" y2="190"/><line x1="190" y1="30" x2="190" y2="190"/><line x1="30" y1="30" x2="190" y2="30"/><line x1="30" y1="70" x2="190" y2="70"/><line x1="30" y1="110" x2="190" y2="110"/><line x1="30" y1="150" x2="190" y2="150"/><line x1="30" y1="190" x2="190" y2="190"/></g>
+<circle cx="150" cy="150" r="4" fill="#3a3020"/>
+<circle cx="70" cy="70" r="8" fill="#e53935" opacity="0.7"/><text x="70" y="60" text-anchor="middle" font-size="9" fill="#e53935" font-weight="bold" font-family="sans-serif">三々</text>
+<circle cx="110" cy="70" r="8" fill="#1565c0" opacity="0.7"/><text x="110" y="60" text-anchor="middle" font-size="9" fill="#1565c0" font-weight="bold" font-family="sans-serif">小目</text>
+<circle cx="110" cy="110" r="8" fill="#2e7d32" opacity="0.7"/><text x="110" y="100" text-anchor="middle" font-size="9" fill="#2e7d32" font-weight="bold" font-family="sans-serif">星</text>
+<circle cx="70" cy="110" r="8" fill="#ff9800" opacity="0.7"/><text x="70" y="100" text-anchor="middle" font-size="9" fill="#ff9800" font-weight="bold" font-family="sans-serif">目外し</text>
+<circle cx="110" cy="70" r="8" fill="#1565c0" opacity="0.7"/>
+</svg>
+</div>
+<p class="fig">▲ 左上隅の代表的な着点（三々・小目・星・目外し）</p>
+
+<!-- ==================== セクション2 ==================== -->
+<h2 id="s2"><span class="n">2</span> 布石の基本パターン</h2>
+
+<h3>代表的な布石</h3>
+<div class="g2">
+<div class="c">
+<h4>三連星（さんれんせい）</h4>
+<p>一辺の3つの星に石を並べる布石。<strong>中央志向の模様作り</strong>が特徴。</p>
+<ul>
+<li>大きな模様を張って勝負する</li>
+<li>相手の侵入を攻めて利益を得る</li>
+<li>地には甘いが、ダイナミックな展開になる</li>
+</ul>
+</div>
+<div class="c">
+<h4>中国流（ちゅうごくりゅう）</h4>
+<p>隅の星＋辺の星下に構える布石。<strong>攻守バランスが良い</strong>。</p>
+<ul>
+<li>隅にカカリされても柔軟に対応できる</li>
+<li>辺の展開が速い</li>
+<li>プロのタイトル戦でも頻出</li>
+</ul>
+</div>
+</div>
+
+<div class="g2">
+<div class="c">
+<h4>小林流（こばやしりゅう）</h4>
+<p>小目＋辺の三線に構える布石。<strong>実利重視</strong>。</p>
+<ul>
+<li>隅と辺の地を確実に確保</li>
+<li>堅実で初心者にもおすすめ</li>
+</ul>
+</div>
+<div class="c">
+<h4>ミニ中国流</h4>
+<p>中国流のコンパクト版。隅の星＋辺の四線に構える。</p>
+<ul>
+<li>AI研究で再評価された布石</li>
+<li>バランスが良く現代でも多用される</li>
+</ul>
+</div>
+</div>
+
+<h3>シマリの種類</h3>
+<table>
+<tr><th>名称</th><th>形</th><th>特徴</th></tr>
+<tr><td>小ゲイマジマリ</td><td>小目＋桂馬の位置</td><td>最も一般的。バランスが良い</td></tr>
+<tr><td>一間ジマリ</td><td>小目＋一間の位置</td><td>堅い。隅の地を確実に守る</td></tr>
+<tr><td>大ゲイマジマリ</td><td>小目＋大桂馬の位置</td><td>広い。辺への発展力があるが、打ち込まれやすい</td></tr>
+</table>
+
+<!-- ==================== セクション3 ==================== -->
+<h2 id="s3"><span class="n">3</span> 定石入門</h2>
+
+<p><strong>定石（じょうせき）</strong>とは、主に隅で双方が最善を尽くした時の手順のこと。覚えておくと序盤を互角に戦えます。</p>
+
+<div class="warn">定石は「暗記」ではなく「理屈」を理解することが大切。なぜその手順なのかを考えましょう。</div>
+
+<h3>星の定石</h3>
+<div class="g2">
+<div class="c">
+<h4>一間バサミ定石</h4>
+<p>星にカカリされた時、一間に挟む手。<strong>戦闘的</strong>な展開になる。</p>
+<ul>
+<li>相手の石を挟んで攻める</li>
+<li>三々に入られることもある</li>
+<li>変化が多い — 実戦で頻出</li>
+</ul>
+</div>
+<div class="c">
+<h4>三々入り定石</h4>
+<p>星の石に対して三々に入る手。<strong>隅の地を直接奪う</strong>。</p>
+<ul>
+<li>隅の地は三々側が取る</li>
+<li>外側は星側が厚みを得る</li>
+<li>AI登場後に評価が大きく変化</li>
+</ul>
+</div>
+</div>
+
+<h3>小目の定石</h3>
+<div class="g2">
+<div class="c">
+<h4>一間高ガカリ定石</h4>
+<p>小目に対して一間高くカカリする。最も基本的。</p>
+<ul>
+<li>ハサミ・受け・ツケなど多様な応手</li>
+<li>初心者はまずこの形から覚える</li>
+</ul>
+</div>
+<div class="c">
+<h4>大ゲイマガカリ定石</h4>
+<p>小目に対して大桂馬にカカリする。柔軟な展開。</p>
+<ul>
+<li>やや控えめだが、安定した展開</li>
+<li>相手の出方を見てから方針を決められる</li>
+</ul>
+</div>
+</div>
+
+<div class="tip">定石は時代とともに変化します。AI（AlphaGoなど）の登場後、多くの定石が再評価されました。「定石を覚えて二目弱くなり」という格言があるように、理解せずに暗記するのは逆効果です。</div>
+
+<!-- ==================== セクション4 ==================== -->
+<h2 id="s4"><span class="n">4</span> 石の形 — 好形と愚形</h2>
+<p>石の形が良いと効率よく戦えます。悪い形は呼吸点が少なく攻められやすくなります。</p>
+
+<h3>好形（こうけい）</h3>
+<div class="g2">
+<div class="c">
+<h4>鉄柱（てっちゅう）</h4>
+<p>二線と三線に縦に並んだ形。<strong>非常に堅い</strong>。辺の地を確実に守る。</p>
+</div>
+<div class="c">
+<h4>虎口（ここう）/ トラの口</h4>
+<p>3つの石で作るL字型の空間。<strong>相手が入ると取られる</strong>防御形。</p>
+</div>
+</div>
+<div class="g2">
+<div class="c">
+<h4>二目の頭</h4>
+<p>相手の2子の頭をハネる形。格言「<strong>二目の頭は見ずハネよ</strong>」</p>
+</div>
+<div class="c">
+<h4>裂かれ形の回避</h4>
+<p>自分の石が切断されて2つの弱い石になる形は最悪。常に連絡を意識する。</p>
+</div>
+</div>
+
+<h3>愚形（ぐけい）— 避けるべき形</h3>
+<h4>空き三角の図解</h4>
+<div class="g2">
+<div>
+<div class="gc">
+<svg width="120" height="120" viewBox="0 0 120 120">
+<rect x="0" y="0" width="120" height="120" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="20" y1="20" x2="20" y2="100"/><line x1="60" y1="20" x2="60" y2="100"/><line x1="100" y1="20" x2="100" y2="100"/><line x1="20" y1="20" x2="100" y2="20"/><line x1="20" y1="60" x2="100" y2="60"/><line x1="20" y1="100" x2="100" y2="100"/></g>
+<circle cx="20" cy="60" r="12" fill="#1a1a1a"/><circle cx="60" cy="60" r="12" fill="#1a1a1a"/><circle cx="60" cy="100" r="12" fill="#1a1a1a"/>
+<text x="20" y="20" font-size="14" fill="#e53935" font-weight="bold">✕</text>
+</svg>
+</div>
+<p class="fig">✕ 空き三角（愚形）</p>
+</div>
+<div>
+<div class="gc">
+<svg width="120" height="120" viewBox="0 0 120 120">
+<rect x="0" y="0" width="120" height="120" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="20" y1="20" x2="20" y2="100"/><line x1="60" y1="20" x2="60" y2="100"/><line x1="100" y1="20" x2="100" y2="100"/><line x1="20" y1="20" x2="100" y2="20"/><line x1="20" y1="60" x2="100" y2="60"/><line x1="20" y1="100" x2="100" y2="100"/></g>
+<circle cx="20" cy="60" r="12" fill="#1a1a1a"/><circle cx="60" cy="60" r="12" fill="#1a1a1a"/><circle cx="100" cy="60" r="12" fill="#1a1a1a"/>
+<text x="20" y="20" font-size="14" fill="#4caf50" font-weight="bold">○</text>
+</svg>
+</div>
+<p class="fig">○ ノビ（好形）</p>
+</div>
+</div>
+<table>
+<tr><th>愚形</th><th>説明</th><th>なぜ悪い</th></tr>
+<tr><td>空き三角</td><td>3つの石がL字型に並び、角が空いている形</td><td>1子分の働きが無駄。呼吸点が少ない</td></tr>
+<tr><td>団子石</td><td>石が固まりすぎて効率が悪い形</td><td>広がりがなく、地も勢力も生まれない</td></tr>
+<tr><td>ダメ場の石</td><td>どちらの役にも立たない場所の石</td><td>手数の無駄。パスと同じ</td></tr>
+<tr><td>裂かれ形</td><td>石が切断されて2つの弱い集団になった形</td><td>両方を守る必要があり負担が大きい</td></tr>
+</table>
+<div class="tip">「形を見る力」は棋力に直結します。プロの棋譜を並べて好形のパターンを覚えましょう。</div>
+
+<!-- ==================== セクション5 ==================== -->
+<h2 id="s5"><span class="n">5</span> 攻めの技術</h2>
+
+<h3>攻めの目的</h3>
+<div class="hl"><strong>重要：</strong>攻めの目的は石を取ることではなく、<strong>攻めながら自分の利益を得ること</strong>です。地を増やす・厚みを築く・相手を固めさせるなど。</div>
+
+<h3>ボウシの図解</h3>
+<div class="gc">
+<svg width="200" height="160" viewBox="0 0 200 160">
+<rect x="0" y="0" width="200" height="160" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="20" y1="20" x2="20" y2="140"/><line x1="60" y1="20" x2="60" y2="140"/><line x1="100" y1="20" x2="100" y2="140"/><line x1="140" y1="20" x2="140" y2="140"/><line x1="180" y1="20" x2="180" y2="140"/><line x1="20" y1="20" x2="180" y2="20"/><line x1="20" y1="60" x2="180" y2="60"/><line x1="20" y1="100" x2="180" y2="100"/><line x1="20" y1="140" x2="180" y2="140"/></g>
+<circle cx="100" cy="100" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="100" cy="60" r="12" fill="#1a1a1a" stroke="#4caf50" stroke-width="2.5"/>
+<text x="130" y="64" font-size="11" fill="#4caf50" font-weight="bold" font-family="sans-serif">←ボウシ</text>
+<text x="130" y="104" font-size="10" fill="#888" font-family="sans-serif">白（弱い石）</text>
+</svg>
+</div>
+<p class="fig">▲ ボウシ：相手の石の頭を押さえて中央への進出を阻む</p>
+
+<h3>攻めの基本手法</h3>
+<div class="g2">
+<div class="c">
+<h4>① ボウシ（帽子）</h4>
+<p>相手の石の真上（1路上）に打つ。<strong>頭を押さえて中央への進出を阻む</strong>。格言：「攻めはボウシから」</p>
+</div>
+<div class="c">
+<h4>② ツメ（詰め）</h4>
+<p>相手の石の根拠（辺の地）を奪う手。<strong>眼を作らせない</strong>ことで攻めが続く。</p>
+</div>
+</div>
+<div class="g2">
+<div class="c">
+<h4>③ モタレ攻め</h4>
+<p>直接取りにいかず、相手の石に<strong>寄りかかるように打って間接的に利益を得る</strong>高等テクニック。</p>
+</div>
+<div class="c">
+<h4>④ カラミ攻め</h4>
+<p>相手の2つの弱い石を同時に攻め、<strong>片方を犠牲にさせてもう片方を取る</strong>。</p>
+</div>
+</div>
+
+<h3>攻めの注意点</h3>
+<ul>
+<li><strong>追いかけすぎない</strong> — 深追いすると自分の弱点が増える</li>
+<li><strong>取ろう取ろうは取られる元</strong> — 石を取ることに固執しない</li>
+<li><strong>厚みを攻めない</strong> — 相手の強い石の近くで戦わない</li>
+<li><strong>自分の弱い石を先に確認</strong> — 攻め返される危険がないか</li>
+</ul>
+
+<!-- ==================== セクション6 ==================== -->
+<h2 id="s6"><span class="n">6</span> 守りとサバキ</h2>
+
+<h3>守りの基本</h3>
+<div class="g2">
+<div class="c">
+<h4>① 二眼を確保する</h4>
+<p>攻められている石は<strong>二眼を作って生きる</strong>のが最優先。確実に2つの眼を作れる形を目指す。</p>
+</div>
+<div class="c">
+<h4>② 連絡する</h4>
+<p>弱い石を<strong>味方の強い石とつなげる</strong>ことで安全にする。切られないよう注意。</p>
+</div>
+</div>
+
+<h3>サバキ（捌き）</h3>
+<div class="hl"><strong>サバキとは：</strong>相手の勢力圏内で<strong>軽く、柔軟に石を運んで活路を開く</strong>テクニック。重い石にならないことがポイント。</div>
+
+<div class="c">
+<h4>サバキの原則</h4>
+<ol>
+<li><strong>軽く打つ</strong> — 石に執着せず、取られてもいい覚悟で打つ</li>
+<li><strong>相手の急所に先着</strong> — 眼形の急所を先に打つ</li>
+<li><strong>ツケを活用</strong> — 相手の石にツケて石数を増やし、形を作る</li>
+<li><strong>捨て石を使う</strong> — 少数の石を犠牲にして全体を軽くする</li>
+</ol>
+</div>
+<div class="tip">「サバキ上手は碁上手」。相手の強い場所で無理に地を作ろうとせず、軽く処理する技術は上級者の証です。</div>
+
+<!-- ==================== セクション7 ==================== -->
+<h2 id="s7"><span class="n">7</span> 厚みと模様</h2>
+
+<h3>厚み（あつみ）</h3>
+<div class="hl"><strong>定義：</strong>外側に向かった強い石の壁。直接地にはならないが、周囲に大きな<strong>影響力</strong>を持つ。</div>
+<div class="g2">
+<div class="c">
+<h4>厚みの活用法</h4>
+<ul>
+<li><strong>攻めの拠点</strong> — 厚みを背景に弱い石を攻める</li>
+<li><strong>模様の起点</strong> — 厚みから大きな囲いを構想する</li>
+<li><strong>戦いの優位</strong> — 厚みの近くでは常に有利</li>
+</ul>
+</div>
+<div class="c">
+<h4>厚みの禁忌</h4>
+<ul>
+<li><strong>「厚みに近寄るな」</strong> — 近くに地を作るのは非効率</li>
+<li>厚みの価値は<strong>遠くに活かす</strong>ことで発揮</li>
+<li>相手の厚みの近くでは戦わない</li>
+</ul>
+</div>
+</div>
+
+<h3>模様（もよう）</h3>
+<div class="hl"><strong>定義：</strong>まだ確定していないが、将来的に地になる<strong>可能性のある大きな空間</strong>。</div>
+<table>
+<tr><th>立場</th><th>戦略</th><th>具体的手法</th></tr>
+<tr><td>模様を作る側</td><td>大きく囲って相手を誘い込む</td><td>ワリ打ち防止・辺の展開・ボウシ</td></tr>
+<tr><td>模様を消す側</td><td>完成前に侵入して縮小する</td><td>消し（浅く入る）・打ち込み（深く入る）</td></tr>
+</table>
+
+<h3>消しと打ち込みの使い分け</h3>
+<div class="g2">
+<div class="c">
+<h4>消し（けし）</h4>
+<p>模様の<strong>外側から浅く制限</strong>する手。安全だが効果は控えめ。模様がまだ大きくない時に使う。</p>
+</div>
+<div class="c">
+<h4>打ち込み（うちこみ）</h4>
+<p>模様の<strong>内部に深く侵入</strong>する手。効果は大きいがリスクも高い。模様が大きくなりすぎた時に使う。</p>
+</div>
+</div>
+<div class="warn">打ち込みのタイミングが重要。早すぎると相手の攻めの的になり、遅すぎると生きるスペースがなくなります。</div>
+
+<!-- ==================== セクション8 ==================== -->
+<h2 id="s8"><span class="n">8</span> 基本手筋</h2>
+<p><strong>手筋（てすじ）</strong>とは実戦で使える効果的な石の運び方。知っているだけで棋力が大きく変わります。</p>
+
+<h3>石を取る手筋</h3>
+<table>
+<tr><th>手筋</th><th>読み</th><th>仕組み</th></tr>
+<tr><td>シチョウ</td><td>しちょう</td><td>アタリを階段状に連続でかけて盤端まで追い詰める</td></tr>
+<tr><td>ゲタ</td><td>げた</td><td>相手の石を斜めから覆って包囲する</td></tr>
+<tr><td>オイオトシ</td><td>おいおとし</td><td>ツイでもアタリが続き最終的に取れる</td></tr>
+<tr><td>ウッテガエシ</td><td>うってがえし</td><td>わざと取らせた後、打ち返して取る</td></tr>
+<tr><td>ホウリコミ</td><td>ほうりこみ</td><td>相手の眼の中に石を投入して眼を潰す</td></tr>
+</table>
+
+<h3>形を作る手筋</h3>
+<table>
+<tr><th>手筋</th><th>読み</th><th>仕組み</th></tr>
+<tr><td>ワタリ</td><td>わたり</td><td>辺沿いに石をつなげて二線で連絡する</td></tr>
+<tr><td>ハザマトビ</td><td>はざまとび</td><td>間を飛んで石の連絡を保つ</td></tr>
+<tr><td>ハネツギ</td><td>はねつぎ</td><td>ハネた後にツイで形を確定させる</td></tr>
+<tr><td>ノゾキ</td><td>のぞき</td><td>相手の連絡点を脅かして応手を強制する</td></tr>
+<tr><td>キリチガイ</td><td>きりちがい</td><td>斜めに切り違えて相手に選択を迫る</td></tr>
+</table>
+
+<!-- ==================== セクション9 ==================== -->
+<h2 id="s9"><span class="n">9</span> 死活の急所</h2>
+<p>石の生死を左右する<strong>急所</strong>を知ることは、攻めにも守りにも不可欠です。</p>
+
+<h3>基本の死活パターン</h3>
+
+<h4>直三の急所 — 図解</h4>
+<div class="g2">
+<div>
+<div class="gc">
+<svg width="180" height="100" viewBox="0 0 180 100">
+<rect x="0" y="0" width="180" height="100" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="20" y1="20" x2="20" y2="80"/><line x1="50" y1="20" x2="50" y2="80"/><line x1="80" y1="20" x2="80" y2="80"/><line x1="110" y1="20" x2="110" y2="80"/><line x1="140" y1="20" x2="140" y2="80"/><line x1="160" y1="20" x2="160" y2="80"/><line x1="20" y1="20" x2="160" y2="20"/><line x1="20" y1="50" x2="160" y2="50"/><line x1="20" y1="80" x2="160" y2="80"/></g>
+<circle cx="20" cy="20" r="10" fill="#1a1a1a"/><circle cx="50" cy="20" r="10" fill="#1a1a1a"/><circle cx="110" cy="20" r="10" fill="#1a1a1a"/><circle cx="140" cy="20" r="10" fill="#1a1a1a"/>
+<circle cx="20" cy="50" r="10" fill="#1a1a1a"/><circle cx="140" cy="50" r="10" fill="#1a1a1a"/>
+<circle cx="80" cy="50" r="9" fill="#e53935" opacity="0.6"/>
+<text x="80" y="54" text-anchor="middle" font-size="10" fill="#fff" font-weight="bold">急</text>
+</svg>
+</div>
+<p class="fig">▲ 直三：中央が急所（攻め側が打てば死）</p>
+</div>
+<div>
+<div class="gc">
+<svg width="200" height="100" viewBox="0 0 200 100">
+<rect x="0" y="0" width="200" height="100" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="20" y1="20" x2="20" y2="80"/><line x1="50" y1="20" x2="50" y2="80"/><line x1="80" y1="20" x2="80" y2="80"/><line x1="110" y1="20" x2="110" y2="80"/><line x1="140" y1="20" x2="140" y2="80"/><line x1="170" y1="20" x2="170" y2="80"/><line x1="20" y1="20" x2="170" y2="20"/><line x1="20" y1="50" x2="170" y2="50"/><line x1="20" y1="80" x2="170" y2="80"/></g>
+<circle cx="20" cy="20" r="10" fill="#1a1a1a"/><circle cx="50" cy="20" r="10" fill="#1a1a1a"/><circle cx="140" cy="20" r="10" fill="#1a1a1a"/><circle cx="170" cy="20" r="10" fill="#1a1a1a"/>
+<circle cx="20" cy="50" r="10" fill="#1a1a1a"/><circle cx="170" cy="50" r="10" fill="#1a1a1a"/>
+<text x="95" y="54" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold">生き</text>
+</svg>
+</div>
+<p class="fig">▲ 直四：どちらが打っても二眼で生き</p>
+</div>
+</div>
+
+<table>
+<tr><th>形</th><th>読み</th><th>結果</th><th>急所</th></tr>
+<tr><td>直二</td><td>ちょくに</td><td>死</td><td>一眼しかできない</td></tr>
+<tr><td>直三</td><td>ちょくさん</td><td>急所次第</td><td>中央が急所。先着で生死が決まる</td></tr>
+<tr><td>直四</td><td>ちょくよん</td><td>生き</td><td>どちらが打っても二眼できる</td></tr>
+<tr><td>直五</td><td>ちょくご</td><td>生き</td><td>十分な広さがある</td></tr>
+<tr><td>曲がり三</td><td>まがりさん</td><td>急所次第</td><td>曲がり角が急所</td></tr>
+<tr><td>曲がり四</td><td>まがりよん</td><td>生き</td><td>二眼が確保できる</td></tr>
+<tr><td>丁四（T字四目）</td><td>ていよん</td><td>生き</td><td>中央が急所だが先着で生き</td></tr>
+<tr><td>角の四目</td><td>すみのよんもく</td><td>生き</td><td>角を利用して二眼</td></tr>
+</table>
+
+<h3>ナカデ（中手）</h3>
+<div class="hl"><strong>ナカデとは：</strong>相手の眼の形の<strong>急所に打って一眼にしてしまう</strong>テクニック。五目以上の空間でも急所に打てば殺せる場合がある。</div>
+<table>
+<tr><th>空間の広さ</th><th>急所</th><th>形</th></tr>
+<tr><td>三目</td><td>中央</td><td>直線・L字どちらも中央が急所</td></tr>
+<tr><td>四目</td><td>—</td><td>直四は無条件生き。曲がり四も基本生き</td></tr>
+<tr><td>五目</td><td>中央</td><td>十字・T字など。中央に打てばナカデ</td></tr>
+<tr><td>六目</td><td>中央</td><td>花六など。急所を外すと生かされる</td></tr>
+</table>
+
+<!-- ==================== セクション10 ==================== -->
+<h2 id="s10"><span class="n">10</span> 攻め合いの計算</h2>
+<p>お互いの石が取り合いになった場合、<strong>呼吸点（ダメ）の数</strong>で勝敗が決まります。</p>
+
+<h3>攻め合いの基本ルール</h3>
+<div class="c">
+<ol>
+<li><strong>外ダメから詰める</strong> — 共通のダメ（中手ダメ）は最後に</li>
+<li><strong>ダメの多い方が勝ち</strong> — 自分のダメが多ければ先に相手を取れる</li>
+<li><strong>眼のある方が有利</strong> — 眼ありvs眼なしは眼あり側が勝つ</li>
+<li><strong>手入れが必要か確認</strong> — 放置すると逆転される場合がある</li>
+</ol>
+</div>
+
+<h3>攻め合いの勝敗判定</h3>
+<table>
+<tr><th>条件</th><th>結果</th></tr>
+<tr><td>自分のダメ ＞ 相手のダメ</td><td><strong>勝ち</strong>（先に相手を取れる）</td></tr>
+<tr><td>自分のダメ ＝ 相手のダメ</td><td><strong>先に打つ方が勝ち</strong>（手番次第）</td></tr>
+<tr><td>自分のダメ ＜ 相手のダメ</td><td><strong>負け</strong>（先に取られる）</td></tr>
+<tr><td>双方とも眼あり、ダメ同数</td><td><strong>セキ</strong>（お互い手が出せない）</td></tr>
+</table>
+
+<!-- ==================== セクション11 ==================== -->
+<h2 id="s11"><span class="n">11</span> ヨセの技術</h2>
+<p>終盤の<strong>ヨセ</strong>は1目の差が勝敗を分けます。正確な計算が必要です。</p>
+
+<h3>ヨセの種類と価値計算</h3>
+<table>
+<tr><th>種類</th><th>説明</th><th>実質価値</th></tr>
+<tr><td>先手ヨセ</td><td>打った後、相手が受けなければならない</td><td>表示目数そのまま</td></tr>
+<tr><td>後手ヨセ</td><td>打っても相手が受ける必要がない</td><td>表示目数 ÷ 2</td></tr>
+<tr><td>逆ヨセ</td><td>放置すると相手の先手になる</td><td>先手に近い価値</td></tr>
+</table>
+<div class="warn"><strong>後手10目 ≒ 先手5目</strong>。大きい先手ヨセから打つのが鉄則！</div>
+
+<h3>ヨセの打つ順番</h3>
+<div class="c">
+<ol>
+<li><strong>大きい先手ヨセ</strong>から順に打つ</li>
+<li>先手ヨセがなくなったら<strong>大きい後手ヨセ</strong>へ</li>
+<li>逆ヨセは放置リスクが高いので早めに打つ</li>
+<li>最後に<strong>ダメ詰め</strong>（1目以下の小さな手）</li>
+</ol>
+</div>
+
+<!-- ==================== セクション12 ==================== -->
+<h2 id="s12"><span class="n">12</span> 形勢判断</h2>
+<p>対局中に「今どちらが有利か」を判断する技術です。</p>
+
+<div class="c">
+<h4>形勢判断の5ステップ</h4>
+<ol>
+<li><strong>確定地を概算</strong> — 囲い切った地を数える</li>
+<li><strong>模様の将来性を見積もる</strong> — 模様が地になる可能性を評価</li>
+<li><strong>弱い石の有無を確認</strong> — 弱い石を持つ側は不利</li>
+<li><strong>コミを考慮</strong> — 白は+6.5目</li>
+<li><strong>総合判断</strong> — 攻めるか守るか方針を決定</li>
+</ol>
+</div>
+
+<h3>形勢に応じた打ち方</h3>
+<table>
+<tr><th>形勢</th><th>方針</th></tr>
+<tr><td>大きくリード</td><td>安全に打つ。無理な戦いを避け、確実に逃げ切る</td></tr>
+<tr><td>やや有利</td><td>ミスを減らしつつ、相手の反撃に備える</td></tr>
+<tr><td>互角</td><td>バランスを取りつつ、相手の弱点を探す</td></tr>
+<tr><td>やや不利</td><td>積極的に勝負手を打つ。複雑な展開に持ち込む</td></tr>
+<tr><td>大きく不利</td><td>勝負手（無理手に近い手）で一発逆転を狙う</td></tr>
+</table>
+
+<!-- ==================== セクション13 ==================== -->
+<h2 id="s13"><span class="n">13</span> 実戦の格言集</h2>
+<p>先人の知恵が凝縮された格言は、局面の判断に迷った時の道しるべになります。</p>
+
+<table>
+<tr><th>格言</th><th>意味</th><th>適用場面</th></tr>
+<tr><td>一に空き隅 二にシマリカカリ</td><td>序盤の手順の目安</td><td>序盤</td></tr>
+<tr><td>隅の急場は見逃すな</td><td>隅の死活は最優先</td><td>全般</td></tr>
+<tr><td>二目の頭は見ずハネよ</td><td>相手の2子の頭をハネる</td><td>中盤</td></tr>
+<tr><td>ツケにはハネよ</td><td>ツケにはハネで応じる</td><td>全般</td></tr>
+<tr><td>攻めはボウシから</td><td>上から被せて攻める</td><td>中盤</td></tr>
+<tr><td>厚みに近寄るな</td><td>厚みの近くに地を作らない</td><td>中盤</td></tr>
+<tr><td>ダメの詰まりは身の詰まり</td><td>呼吸点不足は致命的</td><td>全般</td></tr>
+<tr><td>取ろう取ろうは取られる元</td><td>石を取ることに固執しない</td><td>中盤</td></tr>
+<tr><td>石の下に手あり</td><td>取られた石の下に好手がある</td><td>手筋</td></tr>
+<tr><td>着手禁止点の一路外が急所</td><td>急所は着手禁止点のすぐ外</td><td>死活</td></tr>
+<tr><td>六死八生</td><td>辺の広さ6目は死、8目は生き</td><td>死活</td></tr>
+<tr><td>三目の真ん中が急所</td><td>三目の形は中央が急所</td><td>死活</td></tr>
+<tr><td>四隅取られて碁を打つな</td><td>隅を全て失うと勝てない</td><td>序盤</td></tr>
+<tr><td>コウは脅しから</td><td>コウダテは大きい手から打つ</td><td>コウ</td></tr>
+</table>
+
+<div class="foot">
+<p><strong>囲碁 戦略ガイド — 実戦で勝つための完全マニュアル</strong></p>
+<p>参考：日本棋院、関西棋院の入門・上級者向け教材</p>
+</div>
+
+</div>
+</body>
+</html>

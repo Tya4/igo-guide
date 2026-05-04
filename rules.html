@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>囲碁 正式ルール完全ガイド — 日本囲碁規約準拠</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap');
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#faf8f2;--ink:#2c2416;--ink2:#5a4e3a;--accent:#8b6508;--accent2:#b8860b;--card:#fffdf6;--bd:#e6dcc8;--tip-bg:#e8f5e9;--tip-bd:#4caf50;--warn-bg:#fff8e1;--warn-bd:#ff9800;--hl:#fff3d0;--board:#dcb35c;--bline:#3a3020}
+body{font-family:'Noto Sans JP',sans-serif;font-size:19px;line-height:1.85;color:var(--ink);background:#e8e4da;max-width:960px;margin:0 auto;padding:16px}
+.wrap{background:var(--bg);border-radius:12px;padding:32px 36px;box-shadow:0 4px 30px rgba(0,0,0,.12)}
+.bar{height:4px;background:linear-gradient(90deg,var(--accent2),var(--accent),#d4a017,var(--accent2));border-radius:4px 4px 0 0;margin:-32px -36px 28px}
+h1{font-family:'Noto Serif JP',serif;font-size:38px;color:var(--accent);text-align:center;margin-bottom:6px;letter-spacing:.1em}
+.sub{text-align:center;color:var(--ink2);font-size:17px;margin-bottom:28px}
+h2{font-family:'Noto Serif JP',serif;font-size:28px;color:var(--accent);border-bottom:2px solid var(--accent2);padding-bottom:6px;margin:40px 0 16px;display:flex;align-items:center;gap:10px}
+h2 .n{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;background:var(--accent2);color:#fff;border-radius:50%;font-size:18px;font-family:'Noto Sans JP'}
+h3{font-size:22px;color:var(--ink);margin:18px 0 10px;padding-left:12px;border-left:4px solid var(--accent2)}
+h4{font-size:19px;color:var(--accent);margin:14px 0 8px}
+p{margin-bottom:10px;text-align:justify}
+ul,ol{padding-left:22px;margin-bottom:10px}
+li{margin-bottom:4px}
+.c{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:14px;margin:10px 0}
+.tip{background:var(--tip-bg);border-left:4px solid var(--tip-bd);padding:12px 16px;border-radius:0 6px 6px 0;margin:12px 0;font-size:17px}
+.tip::before{content:'💡 '}
+.warn{background:var(--warn-bg);border-left:4px solid var(--warn-bd);padding:12px 16px;border-radius:0 6px 6px 0;margin:12px 0;font-size:17px}
+.warn::before{content:'⚠️ '}
+.hl{background:var(--hl);border:1px solid #e6d590;border-radius:6px;padding:12px 14px;margin:10px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:17px}
+th,td{border:1px solid #d4c9a8;padding:9px 12px}
+th{background:var(--accent2);color:#fff;font-weight:500;text-align:center}
+td{background:var(--card)}
+tr:nth-child(even) td{background:#f3efe5}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.gc{display:flex;justify-content:center;margin:14px 0}
+.gc svg{max-width:100%;height:auto;zoom:1.35}
+.fig{text-align:center;font-size:18px;color:var(--ink2);margin-top:10px;font-weight:500}
+.toc{margin:20px 0}
+.toc-s{font-weight:700;color:var(--accent);font-size:19px;margin:14px 0 8px;padding-left:10px;border-left:4px solid var(--accent2)}
+.toc ul{list-style:none;padding-left:20px}
+.toc li{margin-bottom:5px;font-size:18px}
+.toc li::before{content:'▸ ';color:var(--accent)}
+.toc a{color:var(--ink);text-decoration:none}
+.toc a:hover{color:var(--accent);text-decoration:underline}
+.ref{font-size:13px;color:var(--ink2);margin-top:4px}
+.foot{text-align:center;margin-top:36px;padding-top:18px;border-top:1px solid var(--bd);color:var(--ink2);font-size:13px}
+@media(max-width:640px){.g2,.g3{grid-template-columns:1fr}.wrap{padding:18px 16px}.bar{margin:-18px -16px 20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="bar"></div>
+
+<h1>囲碁 正式ルール完全ガイド</h1>
+<p class="sub">日本囲碁規約（1989年制定・日本棋院）に基づく詳細ルール解説</p>
+
+<!-- 目次 -->
+<nav class="toc">
+<div class="toc-s">目次</div>
+<div class="g2">
+<div>
+<div class="toc-s">第1部 はじめに</div>
+<ul><li><a href="#ch1">第1章 囲碁とは</a></li></ul>
+<div class="toc-s">第2部 基本ルール</div>
+<ul>
+<li><a href="#ch2">第2章 石の置き方と交点</a></li>
+<li><a href="#ch3">第3章 陣地（地）を囲む</a></li>
+<li><a href="#ch4">第4章 石を取る</a></li>
+<li><a href="#ch5">第5章 着手禁止点</a></li>
+<li><a href="#ch6">第6章 コウ</a></li>
+<li><a href="#ch7">第7章 生と死 — 二眼</a></li>
+</ul>
+</div>
+<div>
+<div class="toc-s">第3部 対局の実践</div>
+<ul>
+<li><a href="#ch8">第8章 対局の流れ</a></li>
+<li><a href="#ch9">第9章 終局と計算</a></li>
+<li><a href="#ch10">第10章 置碁</a></li>
+</ul>
+<div class="toc-s">第4部 正式規約と判例</div>
+<ul>
+<li><a href="#ch11">第11章 日本囲碁規約 — 正式条文</a></li>
+<li><a href="#ch12">第12章 特殊ケースと判例</a></li>
+<li><a href="#ch13">第13章 練習問題</a></li>
+</ul>
+<div class="toc-s">第5部 補足</div>
+<ul>
+<li><a href="#ch14">第14章 日本ルールと中国ルール</a></li>
+<li><a href="#ch15">第15章 対局マナー</a></li>
+<li><a href="#glossary">付録 用語集</a></li>
+</ul>
+</div>
+</div>
+</nav>
+
+<!-- ==================== 第1章 ==================== -->
+<h2 id="ch1"><span class="n">1</span> 囲碁とは</h2>
+<p>囲碁は <strong>約4000年前に中国で誕生</strong> した、世界最古級のボードゲームです。日本には奈良時代（8世紀頃）に伝来し、平安貴族や戦国武将にも愛されてきました。現在は世界70カ国以上でプレーされています。</p>
+
+<h3>ゲームの概要</h3>
+<p>2人のプレーヤーが <strong>黒石</strong> と <strong>白石</strong> を交互に碁盤の上に置き、より広い <strong>陣地（地）</strong> を囲った方が勝ちとなるゲームです。</p>
+
+<h3>道具</h3>
+<div class="g3">
+<div class="c">
+<h4>碁盤（ごばん）</h4>
+<p>19本の縦線と19本の横線が交差する正方形の盤。交点の数は <strong>19×19＝361</strong>。盤上には <strong>9つの星</strong>（目印の黒点）があります。</p>
+</div>
+<div class="c">
+<h4>碁石（ごいし）</h4>
+<p>黒石と白石の2種類。石はレンズ状の形をしています。黒石は白石よりわずかに大きく作られています（目の錯覚を補正するため）。</p>
+</div>
+<div class="c">
+<h4>碁笥（ごけ）</h4>
+<p>碁石を入れる容器。木製や樹脂製があります。対局中はここから石を取り出して盤に打ちます。</p>
+</div>
+</div>
+
+<h3>19路盤の構造</h3>
+<div class="gc">
+<svg width="320" height="340" viewBox="0 0 320 340">
+<rect x="10" y="10" width="300" height="300" fill="#dcb35c" rx="4"/>
+<g stroke="#3a3020" stroke-width="0.5">
+<line x1="25" y1="25" x2="25" y2="295"/><line x1="40" y1="25" x2="40" y2="295"/><line x1="55" y1="25" x2="55" y2="295"/><line x1="70" y1="25" x2="70" y2="295"/><line x1="85" y1="25" x2="85" y2="295"/><line x1="100" y1="25" x2="100" y2="295"/><line x1="115" y1="25" x2="115" y2="295"/><line x1="130" y1="25" x2="130" y2="295"/><line x1="145" y1="25" x2="145" y2="295"/><line x1="160" y1="25" x2="160" y2="295"/><line x1="175" y1="25" x2="175" y2="295"/><line x1="190" y1="25" x2="190" y2="295"/><line x1="205" y1="25" x2="205" y2="295"/><line x1="220" y1="25" x2="220" y2="295"/><line x1="235" y1="25" x2="235" y2="295"/><line x1="250" y1="25" x2="250" y2="295"/><line x1="265" y1="25" x2="265" y2="295"/><line x1="280" y1="25" x2="280" y2="295"/><line x1="295" y1="25" x2="295" y2="295"/>
+<line x1="25" y1="25" x2="295" y2="25"/><line x1="25" y1="40" x2="295" y2="40"/><line x1="25" y1="55" x2="295" y2="55"/><line x1="25" y1="70" x2="295" y2="70"/><line x1="25" y1="85" x2="295" y2="85"/><line x1="25" y1="100" x2="295" y2="100"/><line x1="25" y1="115" x2="295" y2="115"/><line x1="25" y1="130" x2="295" y2="130"/><line x1="25" y1="145" x2="295" y2="145"/><line x1="25" y1="160" x2="295" y2="160"/><line x1="25" y1="175" x2="295" y2="175"/><line x1="25" y1="190" x2="295" y2="190"/><line x1="25" y1="205" x2="295" y2="205"/><line x1="25" y1="220" x2="295" y2="220"/><line x1="25" y1="235" x2="295" y2="235"/><line x1="25" y1="250" x2="295" y2="250"/><line x1="25" y1="265" x2="295" y2="265"/><line x1="25" y1="280" x2="295" y2="280"/><line x1="25" y1="295" x2="295" y2="295"/>
+</g>
+<!-- 9つの星 -->
+<circle cx="70" cy="70" r="3.5" fill="#3a3020"/><circle cx="160" cy="70" r="3.5" fill="#3a3020"/><circle cx="250" cy="70" r="3.5" fill="#3a3020"/>
+<circle cx="70" cy="160" r="3.5" fill="#3a3020"/><circle cx="160" cy="160" r="3.5" fill="#3a3020"/><circle cx="250" cy="160" r="3.5" fill="#3a3020"/>
+<circle cx="70" cy="250" r="3.5" fill="#3a3020"/><circle cx="160" cy="250" r="3.5" fill="#3a3020"/><circle cx="250" cy="250" r="3.5" fill="#3a3020"/>
+<!-- ラベル -->
+<text x="160" y="335" text-anchor="middle" font-size="12" fill="#3a3020" font-family="sans-serif">19路盤（19×19＝361交点）</text>
+<!-- 天元ラベル -->
+<text x="160" y="155" text-anchor="middle" font-size="8" fill="#e53935" font-family="sans-serif">天元</text>
+</svg>
+</div>
+<p class="fig">▲ 19路盤全体図。●は星（ほし）。中央の星を「天元（てんげん）」と呼ぶ</p>
+
+<div class="c">
+<h4>碁盤の各部名称</h4>
+<table>
+<tr><th>名称</th><th>読み</th><th>場所</th><th>特徴</th></tr>
+<tr><td>隅（すみ）</td><td>すみ</td><td>碁盤の四つ角</td><td>最も少ない石で地を囲める</td></tr>
+<tr><td>辺（へん）</td><td>へん</td><td>碁盤の端の4辺</td><td>隅の次に効率が良い</td></tr>
+<tr><td>中央</td><td>ちゅうおう</td><td>碁盤の中心部分</td><td>囲うのに最も石が必要</td></tr>
+<tr><td>天元</td><td>てんげん</td><td>碁盤の中心点</td><td>10の10の位置</td></tr>
+<tr><td>星</td><td>ほし</td><td>盤上の9つの黒点</td><td>目印・置碁の置石位置</td></tr>
+<tr><td>第1線</td><td>だいいっせん</td><td>碁盤の最も外側の線</td><td>「死の線」とも呼ばれる</td></tr>
+<tr><td>第3線</td><td>だいさんせん</td><td>外側から3番目</td><td>「地の線」地を確保しやすい</td></tr>
+<tr><td>第4線</td><td>だいよんせん</td><td>外側から4番目</td><td>「勢力の線」中央への影響力</td></tr>
+</table>
+</div>
+
+<!-- ==================== 第2章 ==================== -->
+<h2 id="ch2"><span class="n">2</span> 石の置き方と交点</h2>
+
+<h3>碁石は「交点」に置く</h3>
+<p>碁石は碁盤の <strong>線と線が交差する点（交点）</strong> に置きます。チェスやオセロのように「マスの中」に置くのではありません。これは囲碁の最も基本的なルールです。</p>
+
+<div class="gc">
+<svg width="360" height="180" viewBox="0 0 360 180">
+<!-- 正しい例 -->
+<rect x="10" y="10" width="150" height="150" fill="#dcb35c" rx="4"/>
+<g stroke="#3a3020" stroke-width="0.6">
+<line x1="35" y1="35" x2="35" y2="135"/><line x1="85" y1="35" x2="85" y2="135"/><line x1="135" y1="35" x2="135" y2="135"/>
+<line x1="35" y1="35" x2="135" y2="35"/><line x1="35" y1="85" x2="135" y2="85"/><line x1="35" y1="135" x2="135" y2="135"/>
+</g>
+<circle cx="85" cy="85" r="14" fill="#1a1a1a"/>
+<text x="85" y="170" text-anchor="middle" font-size="12" fill="#4caf50" font-weight="bold" font-family="sans-serif">✅ 正しい（交点）</text>
+<!-- 間違い例 -->
+<rect x="200" y="10" width="150" height="150" fill="#dcb35c" rx="4"/>
+<g stroke="#3a3020" stroke-width="0.6">
+<line x1="225" y1="35" x2="225" y2="135"/><line x1="275" y1="35" x2="275" y2="135"/><line x1="325" y1="35" x2="325" y2="135"/>
+<line x1="225" y1="35" x2="325" y2="35"/><line x1="225" y1="85" x2="325" y2="85"/><line x1="225" y1="135" x2="325" y2="135"/>
+</g>
+<circle cx="250" cy="60" r="14" fill="#1a1a1a" opacity="0.4"/>
+<line x1="240" y1="50" x2="260" y2="70" stroke="#e53935" stroke-width="3"/>
+<line x1="260" y1="50" x2="240" y2="70" stroke="#e53935" stroke-width="3"/>
+<text x="275" y="170" text-anchor="middle" font-size="12" fill="#e53935" font-weight="bold" font-family="sans-serif">❌ 間違い（マスの中）</text>
+</svg>
+</div>
+
+<h3>石を置ける場所</h3>
+<ul>
+<li>碁盤上の <strong>すべての交点</strong>（361箇所）に石を置くことができる</li>
+<li>ただし、<strong>着手禁止点</strong>（第5章参照）を除く</li>
+<li>一度置いた石は <strong>動かすことができない</strong>（将棋やチェスとは異なる）</li>
+<li>石は取られない限り <strong>盤上に残り続ける</strong></li>
+</ul>
+
+<!-- ==================== 第3章 ==================== -->
+<h2 id="ch3"><span class="n">3</span> 陣地（地）を囲む — 囲碁の目的</h2>
+
+<h3>「地」とは何か</h3>
+<p>囲碁の目的は、相手より多くの <strong>「地」（じ）</strong> を確保することです。</p>
+<div class="hl">
+<strong>地の正式な定義：</strong>自分の <strong>生きている石</strong> で完全に囲まれた碁盤上の空いた交点のこと。
+</div>
+<p>「生きている石」とは、最終的に取られることのない石のことです（第7章「生と死」で詳しく解説）。</p>
+
+<h3>地の数え方 — 具体例</h3>
+<div class="gc">
+<svg width="380" height="200" viewBox="0 0 380 200">
+<rect x="10" y="10" width="160" height="160" fill="#dcb35c" rx="4"/>
+<g stroke="#3a3020" stroke-width="0.5">
+<line x1="30" y1="30" x2="30" y2="150"/><line x1="50" y1="30" x2="50" y2="150"/><line x1="70" y1="30" x2="70" y2="150"/><line x1="90" y1="30" x2="90" y2="150"/><line x1="110" y1="30" x2="110" y2="150"/><line x1="130" y1="30" x2="130" y2="150"/><line x1="150" y1="30" x2="150" y2="150"/>
+<line x1="30" y1="30" x2="150" y2="30"/><line x1="30" y1="50" x2="150" y2="50"/><line x1="30" y1="70" x2="150" y2="70"/><line x1="30" y1="90" x2="150" y2="90"/><line x1="30" y1="110" x2="150" y2="110"/><line x1="30" y1="130" x2="150" y2="130"/><line x1="30" y1="150" x2="150" y2="150"/>
+</g>
+<!-- 黒の地（左上） -->
+<circle cx="30" cy="70" r="8" fill="#1a1a1a"/><circle cx="50" cy="70" r="8" fill="#1a1a1a"/><circle cx="70" cy="70" r="8" fill="#1a1a1a"/>
+<circle cx="70" cy="50" r="8" fill="#1a1a1a"/><circle cx="70" cy="30" r="8" fill="#1a1a1a"/>
+<!-- 黒の地マーク -->
+<text x="30" y="34" text-anchor="middle" font-size="11" fill="#4caf50" font-family="sans-serif">★</text>
+<text x="50" y="34" text-anchor="middle" font-size="11" fill="#4caf50" font-family="sans-serif">★</text>
+<text x="30" y="54" text-anchor="middle" font-size="11" fill="#4caf50" font-family="sans-serif">★</text>
+<text x="50" y="54" text-anchor="middle" font-size="11" fill="#4caf50" font-family="sans-serif">★</text>
+<text x="90" y="195" text-anchor="middle" font-size="12" fill="#3a3020" font-family="sans-serif">黒の地＝★4目</text>
+
+<!-- 白の地（右下） -->
+<rect x="210" y="10" width="160" height="160" fill="#dcb35c" rx="4"/>
+<g stroke="#3a3020" stroke-width="0.5">
+<line x1="230" y1="30" x2="230" y2="150"/><line x1="250" y1="30" x2="250" y2="150"/><line x1="270" y1="30" x2="270" y2="150"/><line x1="290" y1="30" x2="290" y2="150"/><line x1="310" y1="30" x2="310" y2="150"/><line x1="330" y1="30" x2="330" y2="150"/><line x1="350" y1="30" x2="350" y2="150"/>
+<line x1="230" y1="30" x2="350" y2="30"/><line x1="230" y1="50" x2="350" y2="50"/><line x1="230" y1="70" x2="350" y2="70"/><line x1="230" y1="90" x2="350" y2="90"/><line x1="230" y1="110" x2="350" y2="110"/><line x1="230" y1="130" x2="350" y2="130"/><line x1="230" y1="150" x2="350" y2="150"/>
+</g>
+<circle cx="290" cy="90" r="8" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/><circle cx="310" cy="90" r="8" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/><circle cx="330" cy="90" r="8" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/><circle cx="350" cy="90" r="8" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="290" cy="110" r="8" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/><circle cx="290" cy="130" r="8" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/><circle cx="290" cy="150" r="8" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<text x="310" y="114" text-anchor="middle" font-size="11" fill="#1565c0" font-family="sans-serif">★</text>
+<text x="330" y="114" text-anchor="middle" font-size="11" fill="#1565c0" font-family="sans-serif">★</text>
+<text x="350" y="114" text-anchor="middle" font-size="11" fill="#1565c0" font-family="sans-serif">★</text>
+<text x="310" y="134" text-anchor="middle" font-size="11" fill="#1565c0" font-family="sans-serif">★</text>
+<text x="330" y="134" text-anchor="middle" font-size="11" fill="#1565c0" font-family="sans-serif">★</text>
+<text x="350" y="134" text-anchor="middle" font-size="11" fill="#1565c0" font-family="sans-serif">★</text>
+<text x="310" y="154" text-anchor="middle" font-size="11" fill="#1565c0" font-family="sans-serif">★</text>
+<text x="330" y="154" text-anchor="middle" font-size="11" fill="#1565c0" font-family="sans-serif">★</text>
+<text x="350" y="154" text-anchor="middle" font-size="11" fill="#1565c0" font-family="sans-serif">★</text>
+<text x="290" y="195" text-anchor="middle" font-size="12" fill="#3a3020" font-family="sans-serif">白の地＝★9目</text>
+</svg>
+</div>
+<p class="fig">▲ 地の例。★が地（囲まれた空き交点）。盤の端も「壁」として利用できる</p>
+
+<h3>効率の良い場所</h3>
+<div class="c">
+<table>
+<tr><th>場所</th><th>9目囲うのに必要な石</th><th>効率</th></tr>
+<tr><td>隅</td><td><strong>6個</strong></td><td>★★★ 最高</td></tr>
+<tr><td>辺</td><td><strong>9個</strong></td><td>★★ 良い</td></tr>
+<tr><td>中央</td><td><strong>12個</strong></td><td>★ 低い</td></tr>
+</table>
+</div>
+<div class="tip">碁盤の端（辺や隅）は「天然の壁」として機能するため、少ない石で地を囲うことができます。これが「隅から打つ」のが基本とされる理由です。</div>
+
+<!-- ==================== 第4章 ==================== -->
+<h2 id="ch4"><span class="n">4</span> 石を取る — 呼吸点とアタリ</h2>
+
+<h3>呼吸点（こきゅうてん）とは</h3>
+<p>石の上下左右に隣接する <strong>空いている交点</strong> を「呼吸点」（または「ダメ」）と呼びます。斜めは含みません。呼吸点が <strong>すべて塞がれた石は盤上から取り除かれます</strong>。</p>
+
+<div class="gc">
+<svg width="420" height="170" viewBox="0 0 420 170">
+<!-- 中央の石 -->
+<rect x="0" y="0" width="130" height="130" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="25" y1="25" x2="25" y2="105"/><line x1="65" y1="25" x2="65" y2="105"/><line x1="105" y1="25" x2="105" y2="105"/><line x1="25" y1="25" x2="105" y2="25"/><line x1="25" y1="65" x2="105" y2="65"/><line x1="25" y1="105" x2="105" y2="105"/></g>
+<circle cx="65" cy="65" r="13" fill="#1a1a1a"/>
+<circle cx="65" cy="25" r="5" fill="none" stroke="#e53935" stroke-width="2.5"/>
+<circle cx="65" cy="105" r="5" fill="none" stroke="#e53935" stroke-width="2.5"/>
+<circle cx="25" cy="65" r="5" fill="none" stroke="#e53935" stroke-width="2.5"/>
+<circle cx="105" cy="65" r="5" fill="none" stroke="#e53935" stroke-width="2.5"/>
+<text x="65" y="150" text-anchor="middle" font-size="11" fill="#3a3020" font-family="sans-serif">中央：呼吸点4つ</text>
+<!-- 辺の石 -->
+<rect x="145" y="0" width="130" height="130" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="170" y1="25" x2="170" y2="105"/><line x1="210" y1="25" x2="210" y2="105"/><line x1="250" y1="25" x2="250" y2="105"/><line x1="170" y1="25" x2="250" y2="25"/><line x1="170" y1="65" x2="250" y2="65"/><line x1="170" y1="105" x2="250" y2="105"/></g>
+<circle cx="210" cy="25" r="13" fill="#1a1a1a"/>
+<circle cx="170" cy="25" r="5" fill="none" stroke="#e53935" stroke-width="2.5"/>
+<circle cx="250" cy="25" r="5" fill="none" stroke="#e53935" stroke-width="2.5"/>
+<circle cx="210" cy="65" r="5" fill="none" stroke="#e53935" stroke-width="2.5"/>
+<text x="210" y="150" text-anchor="middle" font-size="11" fill="#3a3020" font-family="sans-serif">辺：呼吸点3つ</text>
+<!-- 隅の石 -->
+<rect x="290" y="0" width="130" height="130" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="315" y1="25" x2="315" y2="105"/><line x1="355" y1="25" x2="355" y2="105"/><line x1="395" y1="25" x2="395" y2="105"/><line x1="315" y1="25" x2="395" y2="25"/><line x1="315" y1="65" x2="395" y2="65"/><line x1="315" y1="105" x2="395" y2="105"/></g>
+<circle cx="315" cy="25" r="13" fill="#1a1a1a"/>
+<circle cx="355" cy="25" r="5" fill="none" stroke="#e53935" stroke-width="2.5"/>
+<circle cx="315" cy="65" r="5" fill="none" stroke="#e53935" stroke-width="2.5"/>
+<text x="355" y="150" text-anchor="middle" font-size="11" fill="#3a3020" font-family="sans-serif">隅：呼吸点2つ</text>
+</svg>
+</div>
+<p class="fig">▲ 赤い○が呼吸点。石の位置によって呼吸点の最大数が異なる</p>
+
+<h3>連（れん）— 石のグループ</h3>
+<p>同じ色の石が <strong>縦横に隣接して連なった塊</strong> を「連」と呼びます。連は呼吸点を共有し、<strong>連全体の呼吸点がゼロになるまで取られません</strong>。</p>
+
+<div class="gc">
+<svg width="300" height="160" viewBox="0 0 300 160">
+<rect x="0" y="0" width="130" height="130" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="25" y1="25" x2="25" y2="105"/><line x1="65" y1="25" x2="65" y2="105"/><line x1="105" y1="25" x2="105" y2="105"/><line x1="25" y1="25" x2="105" y2="25"/><line x1="25" y1="65" x2="105" y2="65"/><line x1="25" y1="105" x2="105" y2="105"/></g>
+<circle cx="65" cy="65" r="13" fill="#1a1a1a"/><circle cx="65" cy="25" r="13" fill="#1a1a1a"/>
+<circle cx="25" cy="25" r="5" fill="none" stroke="#e53935" stroke-width="2"/><circle cx="25" cy="65" r="5" fill="none" stroke="#e53935" stroke-width="2"/><circle cx="105" cy="25" r="5" fill="none" stroke="#e53935" stroke-width="2"/><circle cx="105" cy="65" r="5" fill="none" stroke="#e53935" stroke-width="2"/><circle cx="65" cy="105" r="5" fill="none" stroke="#e53935" stroke-width="2"/>
+<text x="65" y="150" text-anchor="middle" font-size="11" fill="#3a3020" font-family="sans-serif">2石の連：呼吸点5つ（共有）</text>
+
+<rect x="160" y="0" width="130" height="130" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="185" y1="25" x2="185" y2="105"/><line x1="225" y1="25" x2="225" y2="105"/><line x1="265" y1="25" x2="265" y2="105"/><line x1="185" y1="25" x2="265" y2="25"/><line x1="185" y1="65" x2="265" y2="65"/><line x1="185" y1="105" x2="265" y2="105"/></g>
+<circle cx="225" cy="65" r="13" fill="#1a1a1a"/><circle cx="225" cy="25" r="13" fill="#1a1a1a"/>
+<text x="225" y="72" text-anchor="middle" font-size="8" fill="#4caf50" font-family="sans-serif">連</text>
+<circle cx="185" cy="65" r="13" fill="#1a1a1a" opacity="0.3"/>
+<text x="185" y="68" text-anchor="middle" font-size="7" fill="white" font-family="sans-serif">斜め</text>
+<text x="225" y="150" text-anchor="middle" font-size="11" fill="#e53935" font-family="sans-serif">❌ 斜めは連にならない</text>
+</svg>
+</div>
+
+<h3>アタリと取り上げ</h3>
+<div class="g2">
+<div class="c">
+<h4>アタリ</h4>
+<p>呼吸点が <strong>残り1つ</strong> の状態。次に相手がそこに打てば石が取られます。</p>
+</div>
+<div class="c">
+<h4>取り上げとアゲハマ</h4>
+<p>呼吸点がゼロになった石は直ちに取り除かれ、<strong>「アゲハマ」</strong>として保管します。終局時の計算に使用します。</p>
+</div>
+</div>
+
+<div class="gc">
+<svg width="380" height="150" viewBox="0 0 380 150">
+<rect x="0" y="0" width="120" height="120" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="20" y1="20" x2="20" y2="100"/><line x1="60" y1="20" x2="60" y2="100"/><line x1="100" y1="20" x2="100" y2="100"/><line x1="20" y1="20" x2="100" y2="20"/><line x1="20" y1="60" x2="100" y2="60"/><line x1="20" y1="100" x2="100" y2="100"/></g>
+<circle cx="60" cy="60" r="12" fill="#1a1a1a"/>
+<circle cx="60" cy="20" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="20" cy="60" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="100" cy="60" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="60" cy="100" r="5" fill="none" stroke="#e53935" stroke-width="2.5"/>
+<text x="60" y="140" text-anchor="middle" font-size="11" fill="#e53935" font-weight="bold" font-family="sans-serif">① アタリ（残り1）</text>
+<!-- → -->
+<text x="145" y="65" text-anchor="middle" font-size="24" fill="var(--accent)">→</text>
+<!-- 白が打つ -->
+<rect x="170" y="0" width="120" height="120" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="190" y1="20" x2="190" y2="100"/><line x1="230" y1="20" x2="230" y2="100"/><line x1="270" y1="20" x2="270" y2="100"/><line x1="190" y1="20" x2="270" y2="20"/><line x1="190" y1="60" x2="270" y2="60"/><line x1="190" y1="100" x2="270" y2="100"/></g>
+<circle cx="230" cy="20" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="190" cy="60" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="270" cy="60" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="230" cy="100" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<text x="230" y="104" text-anchor="middle" font-size="9" fill="#e53935" font-weight="bold" font-family="sans-serif">!</text>
+<text x="230" y="140" text-anchor="middle" font-size="11" fill="#3a3020" font-family="sans-serif">② 白が打つ→黒を取る</text>
+<!-- 結果 -->
+<text x="315" y="65" text-anchor="middle" font-size="24" fill="var(--accent)">→</text>
+<rect x="340" y="30" width="30" height="30" fill="#eee" rx="4" stroke="#ccc"/>
+<circle cx="355" cy="45" r="10" fill="#1a1a1a"/>
+<text x="355" y="85" text-anchor="middle" font-size="10" fill="#3a3020" font-family="sans-serif">アゲハマへ</text>
+</svg>
+</div>
+
+<!-- ==================== 第5章 ==================== -->
+<h2 id="ch5"><span class="n">5</span> 着手禁止点（自殺手の禁止）</h2>
+
+<p>自分の石を置いた瞬間に、その石（または石を含む連）の呼吸点がゼロになる場所には <strong>原則として打つことができません</strong>。これを「着手禁止点」または「自殺手の禁止」と呼びます。</p>
+
+<div class="gc">
+<svg width="320" height="160" viewBox="0 0 320 160">
+<!-- 打てない例 -->
+<rect x="0" y="0" width="130" height="130" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="25" y1="25" x2="25" y2="105"/><line x1="65" y1="25" x2="65" y2="105"/><line x1="105" y1="25" x2="105" y2="105"/><line x1="25" y1="25" x2="105" y2="25"/><line x1="25" y1="65" x2="105" y2="65"/><line x1="25" y1="105" x2="105" y2="105"/></g>
+<circle cx="65" cy="25" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="25" cy="65" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="105" cy="65" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="65" cy="105" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<text x="65" y="69" text-anchor="middle" font-size="16" fill="#e53935" font-weight="bold" font-family="sans-serif">✕</text>
+<text x="65" y="150" text-anchor="middle" font-size="11" fill="#e53935" font-weight="bold" font-family="sans-serif">❌ ここには打てない</text>
+<!-- 例外 -->
+<rect x="180" y="0" width="130" height="130" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="205" y1="25" x2="205" y2="105"/><line x1="245" y1="25" x2="245" y2="105"/><line x1="285" y1="25" x2="285" y2="105"/><line x1="205" y1="25" x2="285" y2="25"/><line x1="205" y1="65" x2="285" y2="65"/><line x1="205" y1="105" x2="285" y2="105"/></g>
+<circle cx="245" cy="25" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="205" cy="65" r="12" fill="#1a1a1a"/><circle cx="205" cy="25" r="12" fill="#1a1a1a"/>
+<circle cx="285" cy="65" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="245" cy="105" r="12" fill="#f5f5f0" stroke="#333" stroke-width="0.8"/>
+<circle cx="205" cy="105" r="12" fill="#1a1a1a"/>
+<text x="245" y="69" text-anchor="middle" font-size="14" fill="#4caf50" font-weight="bold" font-family="sans-serif">○</text>
+<text x="245" y="150" text-anchor="middle" font-size="11" fill="#4caf50" font-weight="bold" font-family="sans-serif">✅ 取れるのでOK</text>
+</svg>
+</div>
+
+<div class="warn"><strong>重要な例外：</strong>その着手によって <strong>相手の石を取り上げることができる場合</strong> は、たとえ一時的に呼吸点がゼロに見えても打つことができます。取り上げた結果、自分の石に呼吸点が生まれるためです。</div>
+
+<!-- ==================== 第6章 ==================== -->
+<h2 id="ch6"><span class="n">6</span> コウ（劫）</h2>
+
+<h3>コウとは何か</h3>
+<p>碁盤上で、黒と白が <strong>お互いに1個ずつ取り合い続ける形</strong> を「コウ」と呼びます。これを放置すると永遠に繰り返されるため、日本囲碁規約では <strong>同一局面の反復を禁止</strong> しています。</p>
+
+<div class="hl">
+<strong>コウのルール：</strong>相手が石を1個取った <strong>直後に</strong>、同じ場所に打ち返して直前と同一の局面を再現することは <strong>禁止</strong>。
+</div>
+
+<h3>コウの手順</h3>
+<div class="gc">
+<svg width="480" height="140" viewBox="0 0 480 140">
+<!-- ステップ1 -->
+<rect x="0" y="0" width="90" height="90" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="15" y1="15" x2="15" y2="75"/><line x1="45" y1="15" x2="45" y2="75"/><line x1="75" y1="15" x2="75" y2="75"/><line x1="15" y1="15" x2="75" y2="15"/><line x1="15" y1="45" x2="75" y2="45"/><line x1="15" y1="75" x2="75" y2="75"/></g>
+<circle cx="15" cy="45" r="10" fill="#1a1a1a"/><circle cx="45" cy="15" r="10" fill="#1a1a1a"/><circle cx="45" cy="75" r="10" fill="#1a1a1a"/>
+<circle cx="45" cy="45" r="10" fill="#f5f5f0" stroke="#333" stroke-width="0.7"/><circle cx="75" cy="45" r="10" fill="#f5f5f0" stroke="#333" stroke-width="0.7"/>
+<text x="45" y="110" text-anchor="middle" font-size="10" fill="#3a3020" font-family="sans-serif">① 黒が白を取る</text>
+<text x="107" y="50" font-size="18" fill="var(--accent)">→</text>
+<!-- ステップ2 -->
+<rect x="120" y="0" width="90" height="90" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="135" y1="15" x2="135" y2="75"/><line x1="165" y1="15" x2="165" y2="75"/><line x1="195" y1="15" x2="195" y2="75"/><line x1="135" y1="15" x2="195" y2="15"/><line x1="135" y1="45" x2="195" y2="45"/><line x1="135" y1="75" x2="195" y2="75"/></g>
+<circle cx="135" cy="45" r="10" fill="#1a1a1a"/><circle cx="165" cy="15" r="10" fill="#1a1a1a"/><circle cx="165" cy="75" r="10" fill="#1a1a1a"/><circle cx="165" cy="45" r="10" fill="#1a1a1a"/>
+<circle cx="195" cy="45" r="10" fill="#f5f5f0" stroke="#333" stroke-width="0.7"/>
+<text x="165" y="110" text-anchor="middle" font-size="10" fill="#e53935" font-family="sans-serif">② 取り返せない!</text>
+<text x="227" y="50" font-size="18" fill="var(--accent)">→</text>
+<!-- ステップ3 -->
+<rect x="240" y="0" width="90" height="90" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="255" y1="15" x2="255" y2="75"/><line x1="285" y1="15" x2="285" y2="75"/><line x1="315" y1="15" x2="315" y2="75"/><line x1="255" y1="15" x2="315" y2="15"/><line x1="255" y1="45" x2="315" y2="45"/><line x1="255" y1="75" x2="315" y2="75"/></g>
+<circle cx="255" cy="45" r="10" fill="#1a1a1a"/><circle cx="285" cy="15" r="10" fill="#1a1a1a"/><circle cx="285" cy="75" r="10" fill="#1a1a1a"/><circle cx="285" cy="45" r="10" fill="#1a1a1a"/>
+<circle cx="315" cy="45" r="10" fill="#f5f5f0" stroke="#333" stroke-width="0.7"/><circle cx="315" cy="15" r="10" fill="#f5f5f0" stroke="#e53935" stroke-width="2"/>
+<text x="285" y="110" text-anchor="middle" font-size="10" fill="#3a3020" font-family="sans-serif">③ 別の場所に打つ</text>
+<text x="315" y="95" text-anchor="middle" font-size="9" fill="#e53935" font-weight="bold" font-family="sans-serif">↑コウダテ</text>
+<text x="347" y="50" font-size="18" fill="var(--accent)">→</text>
+<!-- ステップ4 -->
+<rect x="360" y="0" width="90" height="90" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="375" y1="15" x2="375" y2="75"/><line x1="405" y1="15" x2="405" y2="75"/><line x1="435" y1="15" x2="435" y2="75"/><line x1="375" y1="15" x2="435" y2="15"/><line x1="375" y1="45" x2="435" y2="45"/><line x1="375" y1="75" x2="435" y2="75"/></g>
+<circle cx="435" cy="45" r="10" fill="#f5f5f0" stroke="#333" stroke-width="0.7"/>
+<circle cx="405" cy="15" r="10" fill="#1a1a1a"/><circle cx="405" cy="75" r="10" fill="#1a1a1a"/>
+<circle cx="405" cy="45" r="10" fill="#f5f5f0" stroke="#4caf50" stroke-width="2.5"/>
+<circle cx="375" cy="45" r="10" fill="#1a1a1a"/>
+<text x="405" y="110" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold" font-family="sans-serif">④ 取り返しOK!</text>
+</svg>
+</div>
+
+<div class="c">
+<h4>コウダテとは</h4>
+<p>コウを取り返す前に打つ「別の場所の手」のこと。相手がコウダテに対応せざるを得ない大きな手を打つことで、コウを有利に進めます。コウダテが無視された場合は、コウを解消（コウを埋める）できます。</p>
+</div>
+
+<div class="tip">超コウ（三コウ・四コウなど、長期の循環が発生する形）の場合は「無勝負」となります。</div>
+
+<!-- ==================== 第7章 ==================== -->
+<h2 id="ch7"><span class="n">7</span> 生と死 — 二眼</h2>
+
+<h3>眼（め）とは</h3>
+<p>自分の石の連で <strong>完全に囲まれた1つの空点</strong> を「眼」と呼びます。相手はそこに打つと着手禁止点となるため、眼は呼吸点として永久に残ります。</p>
+
+<h3>二眼の法則</h3>
+<div class="hl">
+<strong>二眼あれば絶対に生き：</strong>連の内部に <strong>独立した2つ以上の眼</strong> を持つ石は、絶対に取ることができない。逆に、1つの眼しか作れない（または眼を作れない）石は「死に石」となる。
+</div>
+
+<div class="gc">
+<svg width="320" height="150" viewBox="0 0 320 150">
+<!-- 二眼で生き -->
+<rect x="0" y="0" width="130" height="120" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="15" y1="15" x2="15" y2="105"/><line x1="35" y1="15" x2="35" y2="105"/><line x1="55" y1="15" x2="55" y2="105"/><line x1="75" y1="15" x2="75" y2="105"/><line x1="95" y1="15" x2="95" y2="105"/><line x1="115" y1="15" x2="115" y2="105"/><line x1="15" y1="15" x2="115" y2="15"/><line x1="15" y1="35" x2="115" y2="35"/><line x1="15" y1="55" x2="115" y2="55"/><line x1="15" y1="75" x2="115" y2="75"/><line x1="15" y1="95" x2="115" y2="95"/><line x1="15" y1="105" x2="115" y2="105"/></g>
+<circle cx="15" cy="15" r="8" fill="#1a1a1a"/><circle cx="35" cy="15" r="8" fill="#1a1a1a"/><circle cx="55" cy="15" r="8" fill="#1a1a1a"/><circle cx="75" cy="15" r="8" fill="#1a1a1a"/><circle cx="95" cy="15" r="8" fill="#1a1a1a"/>
+<circle cx="15" cy="35" r="8" fill="#1a1a1a"/><circle cx="55" cy="35" r="8" fill="#1a1a1a"/><circle cx="95" cy="35" r="8" fill="#1a1a1a"/>
+<circle cx="15" cy="55" r="8" fill="#1a1a1a"/><circle cx="55" cy="55" r="8" fill="#1a1a1a"/><circle cx="75" cy="55" r="8" fill="#1a1a1a"/><circle cx="95" cy="55" r="8" fill="#1a1a1a"/>
+<text x="35" y="40" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold" font-family="sans-serif">眼</text>
+<text x="75" y="40" text-anchor="middle" font-size="10" fill="#4caf50" font-weight="bold" font-family="sans-serif">眼</text>
+<text x="65" y="140" text-anchor="middle" font-size="11" fill="#4caf50" font-weight="bold" font-family="sans-serif">✅ 二眼 → 生き</text>
+<!-- 一眼で死 -->
+<rect x="180" y="0" width="130" height="120" fill="#dcb35c" rx="3"/>
+<g stroke="#3a3020" stroke-width="0.5"><line x1="195" y1="15" x2="195" y2="105"/><line x1="215" y1="15" x2="215" y2="105"/><line x1="235" y1="15" x2="235" y2="105"/><line x1="255" y1="15" x2="255" y2="105"/><line x1="275" y1="15" x2="275" y2="105"/><line x1="295" y1="15" x2="295" y2="105"/><line x1="195" y1="15" x2="295" y2="15"/><line x1="195" y1="35" x2="295" y2="35"/><line x1="195" y1="55" x2="295" y2="55"/><line x1="195" y1="75" x2="295" y2="75"/><line x1="195" y1="95" x2="295" y2="95"/><line x1="195" y1="105" x2="295" y2="105"/></g>
+<circle cx="195" cy="15" r="8" fill="#1a1a1a"/><circle cx="215" cy="15" r="8" fill="#1a1a1a"/><circle cx="235" cy="15" r="8" fill="#1a1a1a"/><circle cx="255" cy="15" r="8" fill="#1a1a1a"/>
+<circle cx="195" cy="35" r="8" fill="#1a1a1a"/><circle cx="255" cy="35" r="8" fill="#1a1a1a"/>
+<circle cx="195" cy="55" r="8" fill="#1a1a1a"/><circle cx="215" cy="55" r="8" fill="#1a1a1a"/><circle cx="235" cy="55" r="8" fill="#1a1a1a"/><circle cx="255" cy="55" r="8" fill="#1a1a1a"/>
+<text x="225" y="40" text-anchor="middle" font-size="10" fill="#e53935" font-weight="bold" font-family="sans-serif">眼1つ</text>
+<text x="245" y="140" text-anchor="middle" font-size="11" fill="#e53935" font-weight="bold" font-family="sans-serif">❌ 一眼 → 死</text>
+</svg>
+</div>
+
+<h3>死活の基本形</h3>
+<div class="g2">
+<div class="c">
+<h4>🟢 生きの形</h4>
+<table>
+<tr><th>形</th><th>読み方</th><th>状態</th></tr>
+<tr><td>直四</td><td>ちょくよん</td><td>一列4目 → 確実に二眼ができる</td></tr>
+<tr><td>曲がり四目</td><td>まがりよんもく</td><td>L字4目 → 基本的に生き</td></tr>
+<tr><td>五目以上</td><td>—</td><td>確実に二眼が作れる</td></tr>
+</table>
+</div>
+<div class="c">
+<h4>🔴 死の形</h4>
+<table>
+<tr><th>形</th><th>読み方</th><th>状態</th></tr>
+<tr><td>直三</td><td>ちょくさん</td><td>一列3目 → 急所（中央）で死</td></tr>
+<tr><td>曲がり三</td><td>まがりさん</td><td>L字3目 → 急所で死</td></tr>
+<tr><td>二目</td><td>にもく</td><td>二眼を作れない → 死</td></tr>
+</table>
+</div>
+</div>
+
+<h3>特殊な死活</h3>
+<div class="g2">
+<div class="c">
+<h4>セキ</h4>
+<p>双方とも手を出すと自分の石が取られるため、互いに手を出せない状態。セキの中の空点は <strong>どちらの地にも数えない</strong>。</p>
+</div>
+<div class="c">
+<h4>隅の曲がり四目</h4>
+<p>日本囲碁規約では <strong>「無条件死」</strong> と規定。攻める側がコウ材を全て消した後にコウに仕掛けることが可能なため、実戦ではコウを争わず死に石として処理する。</p>
+</div>
+</div>
+
+<div class="c">
+<h4>ナカデ（中手）</h4>
+<p>相手の眼の中の <strong>急所</strong> に打ち込んで、二眼を作らせない手筋。三目ナカデ・四目ナカデ・五目ナカデなど、空間の広さに応じた急所がある。</p>
+<ul>
+<li><strong>三目ナカデの急所：</strong>3目の中央</li>
+<li><strong>四目ナカデの急所：</strong>4目のうち2と3の間（2の1の点）</li>
+<li><strong>五目ナカデの急所：</strong>5目の中央</li>
+</ul>
+</div>
+
+<!-- ==================== 第8章 ==================== -->
+<h2 id="ch8"><span class="n">8</span> 対局の流れ</h2>
+
+<h3>先後の決め方 — にぎり</h3>
+<p>対局前に <strong>「にぎり」</strong> で先後を決めます。一方が白石を手の中に握り、もう一方が <strong>偶数か奇数かを当てます</strong>。当てた方が黒（先手）を持ちます。</p>
+
+<h3>対局の3つの段階</h3>
+<div class="g3">
+<div class="c">
+<h4>① 序盤（布石）</h4>
+<p>陣地の骨格を作る段階。<strong>隅→辺→中央</strong>の順で石を配置し、陣地の大枠を決めます。</p>
+<ul><li>まず空いている隅に打つ</li><li>カカリやシマリで隅を確保</li><li>辺に展開して勢力拡大</li></ul>
+</div>
+<div class="c">
+<h4>② 中盤（戦い）</h4>
+<p>石の攻め合い・陣地の拡大を争う段階。</p>
+<ul><li>相手の弱い石を攻める</li><li>自分の石の連絡を保つ</li><li>地と勢力のバランスを取る</li></ul>
+</div>
+<div class="c">
+<h4>③ 終盤（ヨセ）</h4>
+<p>陣地の境界線を確定する段階。</p>
+<ul><li>大きいヨセから順に打つ</li><li>相手の地を減らす手を探す</li><li>双方が打つ場所がなくなったら終局</li></ul>
+</div>
+</div>
+
+<h3>終局の条件</h3>
+<ul>
+<li><strong>双方がパス：</strong>両者が続けてパスすると対局終了（最も一般的）</li>
+<li><strong>投了（とうりょう）：</strong>一方が「参りました」と負けを認めて終了</li>
+<li><strong>時間切れ：</strong>持ち時間制の対局で時間が切れた場合</li>
+</ul>
+
+<!-- ==================== 第9章 ==================== -->
+<h2 id="ch9"><span class="n">9</span> 終局と計算</h2>
+
+<h3>終局処理の手順</h3>
+<div class="c">
+<ol>
+<li><strong>死に石の確認：</strong>双方の合意により、盤上の死に石を確認する</li>
+<li><strong>死に石の除去：</strong>死に石を盤上から取り除き、アゲハマに加える</li>
+<li><strong>ダメ詰め：</strong>どちらの地でもない空点（ダメ）をすべて埋める</li>
+<li><strong>整地：</strong>陣地を数えやすい四角形に整理する</li>
+<li><strong>計算：</strong>地の数からアゲハマを差し引いて勝敗を決定する</li>
+</ol>
+</div>
+
+<div class="warn">死に石の判定で意見が食い違った場合は、<strong>対局を再開して実際に打って確認</strong>します。</div>
+
+<h3>地の計算方法（日本ルール＝地合制）</h3>
+<div class="hl">
+<strong>計算式：</strong><br>
+各プレーヤーの得点 ＝ <strong>地の目数</strong> − <strong>アゲハマ（相手に取られた石の数）</strong><br><br>
+白の得点にはさらに <strong>コミ（6目半）</strong> を加算する。<br>
+得点が多い方が勝ち。
+</div>
+
+<h3>具体的な計算例</h3>
+<div class="c">
+<h4>【計算例】</h4>
+<table>
+<tr><th></th><th>黒</th><th>白</th></tr>
+<tr><td>囲った地</td><td>55目</td><td>50目</td></tr>
+<tr><td>アゲハマ（相手に取られた石）</td><td>−3目</td><td>−2目</td></tr>
+<tr><td>コミ</td><td>なし</td><td>+6.5目</td></tr>
+<tr><td><strong>合計</strong></td><td><strong>52目</strong></td><td><strong>54.5目</strong></td></tr>
+<tr><td colspan="3" style="text-align:center;font-weight:bold;color:var(--accent)">→ 白の 2.5目勝ち</td></tr>
+</table>
+</div>
+
+<h3>コミの詳細</h3>
+<table>
+<tr><th>項目</th><th>内容</th></tr>
+<tr><td>目的</td><td>黒の先手の有利さを補正するためのハンディキャップ</td></tr>
+<tr><td>現行の値</td><td><strong>6目半（6.5目）</strong>（日本棋院・関西棋院の公式戦）</td></tr>
+<tr><td>半目の理由</td><td>引き分け（持碁／ジゴ）を防ぎ、必ず勝敗を決するため</td></tr>
+<tr><td>歴史</td><td>コミなし → 4目半 → 5目半 → <strong>6目半</strong>（2002年〜現行）</td></tr>
+</table>
+
+<!-- ==================== 第10章 ==================== -->
+<h2 id="ch10"><span class="n">10</span> 置碁（おきご）— ハンディキャップ対局</h2>
+
+<p>棋力差がある場合に、弱い方（<strong>下手＝したて</strong>）があらかじめ黒石を星の位置に置いてから対局を行います。強い方（<strong>上手＝うわて</strong>）が白を持ち、白の先手で始まります。</p>
+
+<div class="hl"><strong>置碁では原則としてコミはありません。</strong>引き分け（持碁）の場合は、白（上手）の勝ちとするのが慣例です。</div>
+
+<table>
+<tr><th>形式</th><th>置石の位置</th><th>先手</th></tr>
+<tr><td>定先（じょうせん）</td><td>なし（黒が自由に初手を打つ）</td><td>黒</td></tr>
+<tr><td>2子局</td><td>右上・左下の星</td><td>白</td></tr>
+<tr><td>3子局</td><td>右上・左下・右下の星</td><td>白</td></tr>
+<tr><td>4子局</td><td>四隅の星</td><td>白</td></tr>
+<tr><td>5子局</td><td>四隅の星＋天元</td><td>白</td></tr>
+<tr><td>6子局</td><td>四隅の星＋左右辺の星</td><td>白</td></tr>
+<tr><td>7子局</td><td>6子局＋天元</td><td>白</td></tr>
+<tr><td>8子局</td><td>四隅の星＋四辺の星</td><td>白</td></tr>
+<tr><td>9子局</td><td>すべての星（9つ）</td><td>白</td></tr>
+</table>
+
+<div class="tip">棋力差が1つの場合は「定先」。置き石は置かず、黒がコミなしで先手番を持ちます。1子局（星に1つだけ置く）は通常行いません。</div>
+
+<!-- ==================== 第11章（新）==================== -->
+<h2 id="ch11"><span class="n">11</span> 日本囲碁規約 — 正式条文と解説</h2>
+
+<p>日本囲碁規約は <strong>1989年（平成元年）</strong> に日本棋院と関西棋院が共同で制定した公式ルールです。以下に重要な条文を引用・解説します。</p>
+
+<h3>第1条（対局）</h3>
+<div class="hl"><strong>原文：</strong>「囲碁は、二人のプレーヤーが、一方が黒石、他方が白石を用い、交互に碁盤上の交点に石を置いていくゲームである」</div>
+
+<h3>第4条（着手禁止点）</h3>
+<div class="hl"><strong>原文：</strong>「着手した時に、その着手によって相手の石を取り上げることなく、自分の石に呼吸点がなくなる地点を着手禁止点とする」</div>
+
+<h3>第5条（コウ）</h3>
+<div class="hl"><strong>原文：</strong>「相手の着手により取り上げられた石が1個であった場合、着手した側はただちにその石があった地点に打ってはならない」</div>
+
+<h3>第7条（終局）</h3>
+<div class="hl"><strong>原文：</strong>「一方の着手の後、次に他方がパスし、続いてパスがあった場合、対局は停止する。双方が死に石の確認を行い、合意が得られた場合に終了する」</div>
+<p><strong>連続パス → 死に石の合意 → 終局</strong> という3段階。</p>
+
+<h3>第9条（地の計算）</h3>
+<div class="hl"><strong>原文：</strong>「一方の『地』とは、その一方だけの活き石で囲んだ空点をいう。1空点を1目と数える」</div>
+
+<h3>第12条（無勝負）</h3>
+<div class="hl"><strong>原文：</strong>「同一局面反復の禁止により対局の続行が不可能となった場合は無勝負とする」</div>
+
+<!-- ==================== 第12章 ==================== -->
+<h2 id="ch12"><span class="n">12</span> 特殊ケースと判例</h2>
+<p>規約だけでは判断が難しい特殊な盤面について解説します。</p>
+<h3>隅の曲がり四目</h3>
+<div class="c">
+<p><strong>日本囲碁規約では「無条件死」。</strong>攻める側がコウ材をすべて消してからコウに仕掛けられるため、実戦ではコウを争わず死に石として処理します。</p>
+<div class="warn">中国ルールでは実際にコウを争うため結果が異なる場合があります。</div>
+</div>
+<h3>三コウ・四コウ（無勝負）</h3>
+<div class="c"><table>
+<tr><th>形</th><th>説明</th><th>結果</th></tr>
+<tr><td>三コウ</td><td>3箇所のコウが連動して循環</td><td>無勝負</td></tr>
+<tr><td>四コウ</td><td>4箇所のコウが連動（極めて稀）</td><td>無勝負</td></tr>
+<tr><td>万年コウ</td><td>半永久的にコウを取り合う形</td><td>無勝負</td></tr>
+<tr><td>長生（ちょうせい）</td><td>複数石の循環取り（非常に稀）</td><td>無勝負</td></tr>
+</table></div>
+<h3>セキの地</h3>
+<div class="c"><p>セキの中の空点は<strong>日本ルールではどちらの地にも数えません</strong>。</p></div>
+<h3>持碁（ジゴ）</h3>
+<div class="c"><p>双方の得点が同じ場合。現行の公式戦ではコミが6.5目のため<strong>持碁は発生しません</strong>。置碁では白の勝ちとするのが慣例。</p></div>
+
+<!-- ==================== 第13章 ==================== -->
+<h2 id="ch13"><span class="n">13</span> 練習問題 — ルール理解度チェック</h2>
+<p>ルールが正しく理解できているか確認しましょう。</p>
+<h3>Q1. 呼吸点</h3>
+<div class="c"><p><strong>問題：</strong>辺に置かれた黒石1個の呼吸点はいくつ？</p>
+<details><summary style="cursor:pointer;color:var(--accent);font-weight:bold">▶ 答えを見る</summary><p style="margin-top:8px"><strong>3つ</strong>。辺は1方向が盤端で塞がれるため。</p></details></div>
+<h3>Q2. 着手禁止点</h3>
+<div class="c"><p><strong>問題：</strong>周囲を全て相手の石で囲まれた空点に打てる？</p>
+<details><summary style="cursor:pointer;color:var(--accent);font-weight:bold">▶ 答えを見る</summary><p style="margin-top:8px"><strong>原則打てない</strong>。ただし相手の石を取れる場合は打てます。</p></details></div>
+<h3>Q3. コウ</h3>
+<div class="c"><p><strong>問題：</strong>コウで石を取られた直後、同じ場所に打ち返してもいい？</p>
+<details><summary style="cursor:pointer;color:var(--accent);font-weight:bold">▶ 答えを見る</summary><p style="margin-top:8px"><strong>打てない</strong>。1手以上別の場所に打ってから取り返す。</p></details></div>
+<h3>Q4. 終局計算</h3>
+<div class="c"><p><strong>問題：</strong>黒の地48目・取られた石（アゲハマ）5個。白の地42目・取られた石3個。コミ6.5目。勝者は？</p>
+<details><summary style="cursor:pointer;color:var(--accent);font-weight:bold">▶ 答えを見る</summary><p style="margin-top:8px">黒：48−5＝<strong>43目</strong>　白：42−3+6.5＝<strong>45.5目</strong>　→ <strong>白の2.5目勝ち</strong><br>※アゲハマ＝自分が取られた石の数で、自分の地から差し引く</p></details></div>
+<h3>Q5. 隅の曲がり四目</h3>
+<div class="c"><p><strong>問題：</strong>隅の曲がり四目は日本ルールでは生き？死？</p>
+<details><summary style="cursor:pointer;color:var(--accent);font-weight:bold">▶ 答えを見る</summary><p style="margin-top:8px"><strong>無条件死</strong>。コウ材を消してからコウに仕掛けられるため。</p></details></div>
+
+
+
+
+<!-- ==================== 第14章 ==================== -->
+<h2 id="ch14"><span class="n">14</span> 日本ルールと中国ルールの違い</h2>
+
+<p>囲碁の基本ルールは世界共通ですが、<strong>得点の計算方法</strong>にいくつかの違いがあります。</p>
+
+<div class="c">
+<table>
+<tr><th>項目</th><th>日本ルール（地合制）</th><th>中国ルール（石合制）</th></tr>
+<tr><td>得点の計算</td><td><strong>地（空点）</strong>のみ数える</td><td><strong>地＋盤上の自分の石</strong>を数える</td></tr>
+<tr><td>アゲハマ</td><td>相手の地から減算する</td><td>計算に含まれない</td></tr>
+<tr><td>自殺手</td><td><strong>禁止</strong></td><td><strong>禁止</strong>（一部ルールでは許可）</td></tr>
+<tr><td>コミ</td><td>6目半</td><td>7目半（石も数えるため）</td></tr>
+<tr><td>ダメ詰め</td><td>終局後に行う</td><td>得点に影響するため対局中に行う</td></tr>
+<tr><td>主な使用</td><td>日本・韓国の公式戦</td><td>中国・国際大会</td></tr>
+</table>
+</div>
+
+<div class="tip">計算方法が違っても、<strong>正しく打てば結果はほぼ同じ</strong>になります。日本ルールと中国ルールで勝敗が変わることは極めて稀です。</div>
+
+<!-- ==================== 第15章 ==================== -->
+<h2 id="ch15"><span class="n">15</span> 対局マナーと礼法</h2>
+
+<p>囲碁は礼儀を重んじるゲームです。対局を気持ちよく進めるための基本マナーを紹介します。</p>
+
+<h3>対局前</h3>
+<ul>
+<li><strong>「お願いします」</strong> と挨拶して対局を始める</li>
+<li>上手（うわて）が碁盤に近い方に座る（正式な場合）</li>
+</ul>
+
+<h3>対局中</h3>
+<div class="g2">
+<div class="c">
+<h4>石の持ち方</h4>
+<ul>
+<li>人差し指と中指で挟んで持つ</li>
+<li>石は片手で打つ</li>
+<li>音を立てて打つのはマナー違反ではない（パチッという音は慣習的）</li>
+</ul>
+</div>
+<div class="c">
+<h4>禁止事項</h4>
+<ul>
+<li><strong>「待った」は禁止</strong> — 一度打った石は動かせない</li>
+<li>相手の考慮中に話しかけない</li>
+<li>盤面を指で指し示さない</li>
+<li>碁笥の中で石をジャラジャラ鳴らさない</li>
+</ul>
+</div>
+</div>
+
+<h3>対局後</h3>
+<ul>
+<li>終局後は <strong>「ありがとうございました」</strong> と挨拶する</li>
+<li>勝った方が先に感想を言うのではなく、<strong>負けた方が先に石を崩す</strong>のが慣例</li>
+<li>感想戦（対局の振り返り）を行うことで上達につながる</li>
+</ul>
+
+<h3>投了の作法</h3>
+<div class="c">
+<p>投了（負けを認める）時は以下のように行います。</p>
+<ol>
+<li>碁笥の蓋に残っている石を戻す</li>
+<li><strong>「参りました」</strong> または <strong>「負けました」</strong> と言う</li>
+<li>一礼する</li>
+</ol>
+</div>
+
+<!-- ==================== 付録 ==================== -->
+<h2 id="glossary"><span class="n">📖</span> 付録 — 囲碁用語集</h2>
+
+<p>囲碁でよく使われる用語を50音順にまとめました。</p>
+
+<table>
+<tr><th>用語</th><th>読み方</th><th>意味</th></tr>
+<tr><td>アゲハマ</td><td>あげはま</td><td>対局中に取り上げた相手の石。終局時に相手の地を埋めるのに使う</td></tr>
+<tr><td>アタリ</td><td>あたり</td><td>石の呼吸点が残り1つの状態。次に相手が打てば取られる</td></tr>
+<tr><td>一間トビ</td><td>いっけんとび</td><td>1路飛ばして石を打つこと</td></tr>
+<tr><td>ウッテガエシ</td><td>うってがえし</td><td>わざと石を取らせた後、打ち返して相手の石を取る手筋</td></tr>
+<tr><td>オイオトシ</td><td>おいおとし</td><td>ツイでもアタリが続き、最終的に取られる手筋</td></tr>
+<tr><td>カカリ</td><td>かかり</td><td>隅にある相手の石に近づいて牽制する手</td></tr>
+<tr><td>欠け眼</td><td>かけめ</td><td>完全な眼ではなく、相手に打たれると眼でなくなる形</td></tr>
+<tr><td>ケイマ</td><td>けいま</td><td>将棋の桂馬のような位置関係に打つ手</td></tr>
+<tr><td>ゲタ</td><td>げた</td><td>相手の石を包み込んで逃げられなくする手筋</td></tr>
+<tr><td>コウ</td><td>こう</td><td>互いに1子ずつ取り合いを繰り返す形。直前の取り返しは禁止</td></tr>
+<tr><td>コウダテ</td><td>こうだて</td><td>コウを取り返す前に打つ、別の場所の手</td></tr>
+<tr><td>コスミ</td><td>こすみ</td><td>自分の石から斜め1路に打つ手</td></tr>
+<tr><td>コミ</td><td>こみ</td><td>白の得点に加算されるハンディ。現行は6目半</td></tr>
+<tr><td>シチョウ</td><td>しちょう</td><td>アタリを連続でかけて盤端まで追い詰める手筋</td></tr>
+<tr><td>シマリ</td><td>しまり</td><td>隅の石を2手目で補強して、隅の地を確保する手</td></tr>
+<tr><td>セキ</td><td>せき</td><td>互いに手を出せず、取り合いができない状態</td></tr>
+<tr><td>ダメ</td><td>だめ</td><td>どちらの地にもならない空点。または石の呼吸点</td></tr>
+<tr><td>ダメヅマリ</td><td>だめづまり</td><td>石の呼吸点が不足した窮屈な状態</td></tr>
+<tr><td>地</td><td>じ</td><td>自分の石で囲まれた空き交点。得点の基本単位</td></tr>
+<tr><td>直三</td><td>ちょくさん</td><td>一直線に3目並んだ眼の形。急所を打たれると死ぬ</td></tr>
+<tr><td>直四</td><td>ちょくよん</td><td>一直線に4目並んだ眼の形。確実に二眼ができる</td></tr>
+<tr><td>ツケ</td><td>つけ</td><td>相手の石に直接隣接して打つ手</td></tr>
+<tr><td>ツナギ</td><td>つなぎ</td><td>自分の石と石をつなげて連にする手</td></tr>
+<tr><td>天元</td><td>てんげん</td><td>碁盤の中央の交点（10の10）</td></tr>
+<tr><td>投了</td><td>とうりょう</td><td>負けを認めて対局を終了すること</td></tr>
+<tr><td>ナカデ</td><td>なかで</td><td>相手の眼の急所に打ち、二眼を作らせない手筋</td></tr>
+<tr><td>にぎり</td><td>にぎり</td><td>対局前に先後を決める方法。白石を握って偶数奇数を当てる</td></tr>
+<tr><td>二眼</td><td>にがん</td><td>2つの独立した眼を持つこと。石が絶対に取られない条件</td></tr>
+<tr><td>ノビ</td><td>のび</td><td>自分の石から縦横に1路伸ばして打つ手</td></tr>
+<tr><td>ハネ</td><td>はね</td><td>相手の石の頭を斜めに押さえる手</td></tr>
+<tr><td>星</td><td>ほし</td><td>碁盤上の9つの目印の点。置碁では置石の位置</td></tr>
+<tr><td>ホウリコミ</td><td>ほうりこみ</td><td>相手の陣地に石を投入して眼を奪う手筋</td></tr>
+<tr><td>布石</td><td>ふせき</td><td>序盤の石の配置。地と勢力の骨格を作る段階</td></tr>
+<tr><td>曲がり三</td><td>まがりさん</td><td>L字型に3目並んだ眼の形。急所を打たれると死ぬ</td></tr>
+<tr><td>曲がり四目</td><td>まがりよんもく</td><td>L字型に4目並んだ眼の形。基本的に生き</td></tr>
+<tr><td>眼</td><td>め</td><td>自分の石で完全に囲まれた1つの空点</td></tr>
+<tr><td>ヨセ</td><td>よせ</td><td>終盤の境界線確定の段階。大きいヨセから打つのが鉄則</td></tr>
+<tr><td>呼吸点</td><td>こきゅうてん</td><td>石の上下左右に隣接する空点。ゼロになると取られる</td></tr>
+<tr><td>連</td><td>れん</td><td>縦横につながった同色の石の塊。呼吸点を共有する</td></tr>
+</table>
+
+<div class="foot">
+<p><strong>囲碁 正式ルール完全ガイド</strong></p>
+<p>日本囲碁規約（1989年制定・日本棋院）に基づく</p>
+<p>参考：日本棋院「楽しい囲碁入門」・日本囲碁規約</p>
+</div>
+
+</div>
+</body>
+</html>
